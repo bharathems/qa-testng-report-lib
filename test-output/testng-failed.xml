@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [C3P API Regression Suite]" guice-stage="DEVELOPMENT" verbose="10">
+  <parameter name="authFileName" value="userDataCA_MARY"/>
+  <test thread-count="5" name="002 C3P API Misc Tests(failed)" verbose="10">
+    <classes>
+      <class name="org.c3p.automation.api.steps.report.APITestCasesValidation">
+        <methods>
+          <include name="API_Prerequisites"/>
+          <include name="reportsCaseValidation"/>
+          <include name="tearDown"/>
+          <include name="beforeMethod"/>
+          <include name="tearDownTest"/>
+        </methods>
+      </class> <!-- org.c3p.automation.api.steps.report.APITestCasesValidation -->
+    </classes>
+  </test> <!-- 002 C3P API Misc Tests(failed) -->
+</suite> <!-- Failed suite [C3P API Regression Suite] -->
