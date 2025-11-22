@@ -8,15 +8,19 @@ import java.util.Map;
 
 import static org.exp.reportservice.testng.ChartGenerator.createBarChart;
 import static org.exp.reportservice.testng.ChartGenerator.createPieChart;
-import static org.exp.reportservice.testng.TestNGReportParser.resultsBharath;
+import static org.exp.reportservice.testng.TestNGReportParser.testNgResults;
 
-public class TestNGRunner {
+public class TestExecutionManager {
 
     public static StringBuilder legendHtml = new StringBuilder();
-    public static void sendTestNGReportsInEmail(boolean executeFlag, String mailTo, String mailSubject, String optionalFilePath) {
-        if (!executeFlag) {
-            return;
-        }
+    public static void emailTestReports(String applicationName, String mailTo, String mailSubject) {
+        generateAndSendTestNGReports(applicationName, mailTo, mailSubject, null);
+    }
+    public static void emailTestReports(String applicationName, String mailTo, String mailSubject, String optionalFilePath) {
+        generateAndSendTestNGReports(applicationName, mailTo, mailSubject, optionalFilePath);
+    }
+
+    public static void generateAndSendTestNGReports(String applicationName, String mailTo, String emailSubject, String optionalFilePath){
         Path path = Paths.get(System.getProperty("user.dir")).resolve("test-output").resolve("testng-results.xml");
         if (optionalFilePath != null) {
             path = Paths.get(optionalFilePath);
@@ -26,25 +30,22 @@ public class TestNGRunner {
             Map<String, Integer> statusCounts = new HashMap<>();
             Map<String, Map<String, Integer>> featureMap = new HashMap<>();
 
-            StringBuilder htmlResults = TestNGReportParser.parser(path);
-            for (TestNGResult res : resultsBharath) {
+            StringBuilder htmlResults = TestNGReportParser.parser(applicationName, path);
+            for (TestNGResult res : testNgResults) {
                 statusCounts.put(res.methodStatus, statusCounts.getOrDefault(res.methodStatus, 0) + 1);
                 featureMap.putIfAbsent(res.className, new HashMap<>());
                 Map<String, Integer> inner = featureMap.get(res.className);
                 inner.put(res.methodStatus, inner.getOrDefault(res.methodStatus, 0) + 1);
             }
-            File pieChart = createPieChart(statusCounts, "Overall Summary", "target/piechart1.png");
+            File pieChart = createPieChart(statusCounts, "Overall Summary", "target/piechart.png");
             File barChart = createBarChart(featureMap, "Execution Status by Methods", "target/barchart.png");
-            // Replace placeholders in HTML template
-//            replacePlaceholder(htmlResults, "{donutGraphPlaceHolder}", legendHtml.toString());
-//            replacePlaceholder(htmlResults, "{calloutsHtml}", ChartGenerator.buildCallouts(featureMap));
-            SendTestNGResultsInEmail.sendResultsEmail(mailTo, mailSubject, htmlResults, pieChart, barChart);
+            TestReportMailer.emailTestReport(mailTo, emailSubject, htmlResults, pieChart, barChart);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     public static void main(String[] args) {
-        sendTestNGReportsInEmail(true, "bharath.potlabhatni@experian.com", "Production Sanity Execution Report", null);
+        emailTestReports("C3P",  "bharath.potlabhatni@experian.com", "Production Sanity Execution Report");
     }
 
     private static void replacePlaceholder(StringBuilder builder, String placeholder, String replacement) {

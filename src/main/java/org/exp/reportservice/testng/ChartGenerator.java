@@ -134,13 +134,13 @@ class ChartGenerator {
         ChartUtils.saveChartAsPNG(output, chart, width, height);
         return output;
     }
-    //bharath
+
     public static File createBarChart(Map<String, Map<String, Integer>> data, String title, String path) throws IOException {
         if (data == null || data.isEmpty()) {
             throw new IllegalArgumentException("Data map cannot be null or empty.");
         }
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        String[] statusOrder = {"pass", "fail", "skip"};
+        String[] statusOrder = {"PASS", "FAIL", "SKIP"};
         for (String feature : data.keySet()) {
             // Use only the simple class name (after the last dot) as the category label
             String displayFeature = feature;
@@ -204,9 +204,17 @@ class ChartGenerator {
         renderer.setShadowPaint(Color.LIGHT_GRAY);
         renderer.setItemMargin(0.1);
 
-        renderer.setSeriesPaint(0, new Color(144, 238, 144));   // pass
-        renderer.setSeriesPaint(1, new Color(255, 99, 71));   // fail
-        renderer.setSeriesPaint(2, new Color(251, 188, 5));   // skip
+        renderer.setSeriesPaint(0, new Color(46, 204, 113)); // Green for Passed
+        renderer.setSeriesPaint(1, new Color(231, 76, 60));  // Red for Failed
+        renderer.setSeriesPaint(2, new Color(255, 193, 7));  // Orange for Skipped
+        renderer.setDrawBarOutline(true);
+        renderer.setSeriesOutlinePaint(0, Color.WHITE);
+        renderer.setSeriesOutlinePaint(1, Color.WHITE);
+        renderer.setSeriesOutlinePaint(2, Color.WHITE);
+
+//        renderer.setSeriesPaint(1, new Color(255, 99, 71));   // fail
+
+        // skip
 
         File output = new File(path);
         TextTitle chartTitle = chart.getTitle();
