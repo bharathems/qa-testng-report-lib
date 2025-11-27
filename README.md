@@ -26,12 +26,15 @@ To use this library in another Maven project:
 
 1. Deploy the library to your Nexus repository (if not already done): 
    mvn clean deploy -Dnexus.username=your-username -Dnexus.password=your-password
+   mvn clean deploy -Dnexus.username=C73572A -Dnexus.password=
+   
 2. Add the dependency to your target project's pom.xml:
-<dependency>
-    <groupId>com.experian.reportservice.testng</groupId>
-    <artifactId>qa-testng-report-lib</artifactId>
-    <version>1.0-SNAPSHOT</version>
-</dependency>
+   <dependency>
+   <groupId>com.experian.reportservice.testng</groupId>
+   <artifactId>testng-email-report-service</artifactId>
+   <version>1.0-SNAPSHOT</version>
+   </dependency>
+3. 
 3. Ensure your target project is configured to access the Nexus repository where the library is deployed.
    <repositories>
    <repository>

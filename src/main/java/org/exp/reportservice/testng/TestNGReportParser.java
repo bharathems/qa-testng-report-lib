@@ -33,18 +33,55 @@ public class TestNGReportParser {
          StringBuilder htmlBuilder = new StringBuilder();
          String formattedDate = new SimpleDateFormat("d-MMM-yyyy").format(new Date());
 
-         final String TABLE_STYLE = "border-collapse:separate;font-family:Arial,sans-serif;font-size:12px;width:100%;background:#ffffff;border-radius:8px;overflow:hidden;border-spacing:0;";
-         final String TH_STYLE = "style=\"background:#fbfdff;color:#0b2b4a;padding:12px 10px;border-bottom:3px solid #e6eef6;border-right:1px solid #eef3fb;text-align:left;font-weight:700;font-size:12px;letter-spacing:0.6px;text-transform:uppercase;\"";
 
-         final String TABLE_ATTR = "border=\"0\" cellpadding=\"6\" cellspacing=\"0\"";
-         final String TD_STYLE = "style=\"padding:10px 8px;border:1px solid #eef3fb;text-align:left;vertical-align:top;color:#223047;background:#ffffff;font-size:13px;\"";
+       final String TABLE_STYLE = "border-collapse:separate;font-family:Arial,sans-serif;font-size:12px;width:100%;background:#ffffff;border-radius:8px;overflow:hidden;border-spacing:0;";
+       final String TH_STYLE = "style=\"background:#fbfdff;color:#0b2b4a;padding:12px 10px;border-bottom:3px solid #e6eef6;border-right:1px solid #eef3fb;text-align:left;font-weight:700;font-size:12px;letter-spacing:0.6px;text-transform:uppercase;\"";
+      final String TD_STYLE = "style=\"padding:10px 8px;border:1px solid #eef3fb;text-align:left;vertical-align:top;color:#223047;background:#ffffff;font-size:13px;\"";
+
+//        final String TABLE_STYLE = "width:100%;font-family:Arial,sans-serif;font-size:13px;background:#ffffff;border:1px solid #e6eef6;";
+
+//Dark color
+//        final String TH_STYLE = "style=\"background-color:#0b57a4;"
+//                + "background:linear-gradient(90deg,#0b57a4 0%,#2196f3 100%);"
+//                + "color:#ffffff !important;"
+//                + "-webkit-text-fill-color:#ffffff;"
+//                + "padding:14px 10px;"
+//                + "border-bottom:3px solid #1565c0;"
+//                + "border-right:1px solid #e6eef6;"
+//                + "text-align:left;"
+//                + "font-weight:bold;"
+//                + "font-size:15px;"
+//                + "letter-spacing:1px;"
+//                + "text-shadow:0 1px 2px rgba(11,43,74,0.13);"
+//                + "font-family:Arial,sans-serif;\"";
+
+        // Light color
+//        final String TH_STYLE = "style=\"background-color:#eaf4ff;"
+//                + "background:linear-gradient(90deg,#cfe9ff 0%,#eaf4ff 100%);"
+//                + "color:#08325a !important;"
+//                + "-webkit-text-fill-color:#08325a;"
+//                + "padding:12px 10px;"
+//                + "border-bottom:2px solid #c6e0ff;"
+//                + "border-right:1px solid #e6eef6;"
+//                + "text-align:left;"
+//                + "font-weight:700;"
+//                + "font-size:15px;"
+//                + "letter-spacing:0.6px;"
+//                + "text-shadow:0 1px 0 rgba(255,255,255,0.6);"
+//                + "font-family:Arial,sans-serif;\"";
+//        final String TD_STYLE = "style=\"padding:8px 6px;border-bottom:1px solid #e6eef6;border-right:1px solid #e6eef6;text-align:left;color:#223047;background:#ffffff;font-size:13px;\"";
+
+        final String TABLE_ATTR = "border=\"0\" cellpadding=\"6\" cellspacing=\"0\"";
+//
          final String CAPTION_STYLE = "style=\"text-align:left;font-weight:700;padding:8px 6px;font-size:13px;color:#0b2b4a;\"";
          // Styles for sections and headings
          final String SECTION_STYLE = "style=\"background:#f8fafc;border-radius:8px;padding:20px;margin:16px 0;box-shadow:0 2px 8px #e2e8f0;\"";
          final String SECTION_HEAD_STYLE = "style=\"font-size:20px;font-weight:700;color:#0b57a4;margin-bottom:8px;font-family:Arial,Helvetica,sans-serif;\"";
          final String SECTION_BODY_STYLE = "style=\"font-size:14px;color:#16325c;font-family:Arial,Helvetica,sans-serif;\"";
-
-        htmlBuilder.append("<div class=\"headerPart\" style=\""
+        htmlBuilder.append("<a id=\"top\" name=\"top\"></a>");
+        htmlBuilder.append("<table width=\"100%\" border=\"0\" cellpadding=\"8\" cellspacing=\"0\" bgcolor=\"#f8fafc\" style=\"background:#f8fafc;width:100%;border:1px solid #e6eef6;\">");
+//        htmlBuilder.append("<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#f8fafc\" style=\"background:#f8fafc;width:100%;\"><tr><td>");
+        htmlBuilder.append("<div id=\"top\" class=\"headerPart\" style=\""
                 + "font-family:Arial,sans-serif;"
                 + "margin-bottom:20px;"
                 + "border:1px solid #e6eef6;"
@@ -124,11 +161,13 @@ public class TestNGReportParser {
             Element suiteElement = (Element) suiteNode;
             String suiteName = suiteElement.getAttribute("name");
 
-            scnHtmlBuilder.append("<table " + TABLE_ATTR + " style=\"" + TABLE_STYLE + "margin-bottom:12px;\">")
-                    .append("<caption " + CAPTION_STYLE + ">" + suiteName + "</caption>")
+            scnHtmlBuilder.append("<table id=\"feature-details\" " + TABLE_ATTR + " style=\"" + TABLE_STYLE + "margin-bottom:12px;\">")
+                    .append("<caption " + CAPTION_STYLE + ">"
+                            + " <span style=\"color:#0b57a4;font-weight:700;font-family:Arial,Helvetica,sans-serif;\">SUITE NAME - </span>" + escapeHtml(suiteName) + "</caption>")
                     .append("<tr>")
                     .append("<th " + TH_STYLE + ">Test Name</th>")
                     .append("<th " + TH_STYLE + ">Class Name</th>")
+                    .append("<th " + TH_STYLE + ">Method Name</th>")
                     .append("<th " + TH_STYLE + ">Status</th>")
                     .append("<th " + TH_STYLE + ">Time (ms)</th>")
                     .append("</tr>");
@@ -150,27 +189,36 @@ public class TestNGReportParser {
                 String testStatus = getTestMethodStatus(testElement);
                 String color = testStatus.equalsIgnoreCase("fail") ? "red" : "green";
                 createTestName += " <tr>\n" + "<td " + TD_STYLE + ">" + testName + "</td>\n" + "<td " + TD_STYLE + " style=\"text-align:center;\">-----</td>" + "<td " + TD_STYLE + " style=\"color:" + color + ";font-weight:bold;\">" + statusPill(testStatus) + "</td>\n" + "<td " + TD_STYLE + "> " + testDurationMS + " </td>\n" + "</tr>";
-
                 //loop through classes
                 NodeList testClasses = testElement.getElementsByTagName("class");//get all classes in tests
 
-                scnHtmlBuilder.append("<tr>").append("<td " + TD_STYLE + ">").append(testName).append("</td>");
-                int testNameCount = 0;
+                boolean firstRowForTest = true;
                 for (Node testClass_nodes : nodeListIterable(testClasses)) { // loop through classes in tests
                     if (testClass_nodes.getNodeType() != Node.ELEMENT_NODE) continue;
                     Element testClassesElement = (Element) testClass_nodes;
                     String testClassName = testClassesElement.getAttribute("name");// class name
-                    String classStatus = "PASS";
+//                    String simpleClassName = (testClassName == null) ? "" :
+//                            (testClassName.contains(".") ? testClassName.substring(testClassName.lastIndexOf('.') + 1) : testClassName);
                     boolean hasFail = false, hasSkip = false, hasPass = false;
-                    NodeList elementsByTagName = testClassesElement.getElementsByTagName("test-method"); //get all methods in classes
+                    NodeList elementsByTagName = testClassesElement.getElementsByTagName("test-method"); //get all METHODS in CLASSES
 
-                    for (Node testClassMethodName_nodes : nodeListIterable(elementsByTagName)) { //loop through methods in classes
+                    // We'll accumulate rows for this class, detect aggregate class status by scanning methods first,
+                    // then prepend the class/test header rows so class status is accurate (dynamic).
+                    StringBuilder classRowsBuilder = new StringBuilder();
+                    // iterate methods and build method rows into the class buffer
+                    for (Node testClassMethodName_nodes : nodeListIterable(elementsByTagName)) { //loop through METHODS in CLASSES
 
                         if (testClassMethodName_nodes.getNodeType() != Node.ELEMENT_NODE) continue;
 
                         Element testClassesMethodElement = (Element) testClassMethodName_nodes;
-                        String testMethodName = testClassesElement.getAttribute("name");
+                        // Skip TestNG config methods (before/after/config) - only process real test methods
+                        if ("true".equalsIgnoreCase(testClassesMethodElement.getAttribute("is-config"))) {
+                            continue;
+                        }
+
+                        String testMethodName = testClassesMethodElement.getAttribute("name");
                         String methodStatus = testClassesMethodElement.getAttribute("status");//Method status
+
                         if (methodStatus.equalsIgnoreCase("fail")) {
                             hasFail = true;
                             totalMethodsFailedCount++;
@@ -185,25 +233,49 @@ public class TestNGReportParser {
                             methodsSize++;
                         } else {
                             hasSkip = true;
-
                             totalMethodsSkippedCount++;
                             totalMethodsSize++;
                             methodsSkippedCount++;
                             methodsSize++;
                         }
 
-                        testNgResults.add(new TestNGResult(suiteName, testName, testClassName, testMethodName, testStatus, methodStatus.toLowerCase(), testDurationMS));
-                    } //Methods
-                    classStatus = hasFail ? "FAIL" : hasSkip && !hasPass ? "SKIP" : "PASS";
+                        // Build a full row for this method and append to class buffer
+                        classRowsBuilder.append("<tr>");
+                        classRowsBuilder.append("<td " + TD_STYLE + ">").append("").append("</td>");
+                        classRowsBuilder.append("<td " + TD_STYLE + "><div style=\"text-align:center;\">").append("-----").append("</div></td>");
+                        classRowsBuilder.append("<td " + TD_STYLE + ">").append(escapeHtml(testMethodName)).append("</td>");
+                        classRowsBuilder.append("<td " + TD_STYLE + ">").append(statusPill(methodStatus, 10, 1200)).append("</td>");
+                        classRowsBuilder.append("<td " + TD_STYLE + ">").append("").append("</td>");
+                        classRowsBuilder.append("</tr>");
 
-                    if (testNameCount == 0) {
-                        scnHtmlBuilder.append("<td " + TD_STYLE + ">").append("------").append("</td>");
-                        scnHtmlBuilder.append("<td " + TD_STYLE + ">").append(statusPill(testStatus)).append("</td>").append("<td " + TD_STYLE + ">").append(testDurationMS).append("</td>").append("</tr>")
-                                .append("<tr><td " + TD_STYLE + "></td><td " + TD_STYLE + ">").append(testClassName).append("</td><td " + TD_STYLE + ">").append(statusPill(classStatus)).append("</td></tr>");
-                    } else {
-                        scnHtmlBuilder.append("<td " + TD_STYLE + "></td><td " + TD_STYLE + ">").append(testClassName).append("</td><td " + TD_STYLE + ">").append(statusPill(classStatus)).append("</td><td " + TD_STYLE + "></td></tr>");
-                    }
-                    testNameCount++;
+                        testNgResults.add(new TestNGResult(suiteName, testName, testClassName, testMethodName, testStatus, methodStatus.toLowerCase(), testDurationMS));
+                    } //Loop through METHODS in CLASSES
+
+                    // Determine aggregate class status dynamically after scanning methods
+                    String classStatus = hasFail ? "FAIL" : (hasSkip && !hasPass ? "SKIP" : "PASS");
+
+                    // Prepend the header rows for test and class (only once per class)
+                    scnHtmlBuilder.append("<a id=\"feature-details-table\" name=\"feature-details-table\"></a>");
+                    scnHtmlBuilder.append("<tr id=\"abc\">");
+                    System.out.println(firstRowForTest);
+                    scnHtmlBuilder.append("<td " + TD_STYLE + ">").append(firstRowForTest ? escapeHtml(testName) : "").append("</td>");
+                    scnHtmlBuilder.append("<td " + TD_STYLE + "><div style=\"text-align:center;\">").append("-----").append("</div></td>");
+                    scnHtmlBuilder.append("<td " + TD_STYLE + "><div style=\"text-align:center;\">").append("-----").append("</div></td>");
+                    scnHtmlBuilder.append("<td " + TD_STYLE + ">").append(firstRowForTest ? statusPill(testStatus) : "").append("</td>");
+                    scnHtmlBuilder.append("<td " + TD_STYLE + ">").append(firstRowForTest ? testDurationMS : "").append("</td>");
+                    scnHtmlBuilder.append("</tr>");
+
+                    scnHtmlBuilder.append("<tr>");
+                    scnHtmlBuilder.append("<td " + TD_STYLE + "><div style=\"text-align:center;\">").append("").append("</div></td>");
+                    scnHtmlBuilder.append("<td " + TD_STYLE + "><div style=\"text-align:center;\">").append(escapeHtml(testClassName)).append("</div></td>");
+                    scnHtmlBuilder.append("<td " + TD_STYLE + "><div style=\"text-align:center;\">").append("-----").append("</div></td>");
+                    scnHtmlBuilder.append("<td " + TD_STYLE + ">").append(statusPill(classStatus, 11, 1200)).append("</td>");
+                    scnHtmlBuilder.append("<td " + TD_STYLE + ">").append("").append("</td>");
+                    scnHtmlBuilder.append("</tr>");
+
+                    // Append collected method rows for the class
+                    scnHtmlBuilder.append(classRowsBuilder.toString());
+                    firstRowForTest = false;
                 } //Classes
 
                 String rowBg = (featureRowIndex % 2 == 0) ? "#ffffff" : "#fbfdff";
@@ -221,19 +293,23 @@ public class TestNGReportParser {
         featuresTableBuilder.append("</table>");
 
 
-        String passedBadgeHtml = "<span style=\"display:inline-block;font-size:20px;font-weight:700;color:#2d6a33;line-height:1;text-align:center;\">"
-                + totalMethodsPassedCount + "</span>";
-        String failedBadgeHtml = "<span style=\"display:inline-block;font-size:20px;font-weight:700;color:#a94442;line-height:1;text-align:center;\">"
-                + totalMethodsFailedCount + "</span>";
-        String skippedBadgeHtml = "<span style=\"display:inline-block;font-size:20px;font-weight:700;color:#7a5b18;line-height:1;text-align:center;\">"
-                + totalMethodsSkippedCount + "</span>";
-        String totalBadgeHtml = "<span style=\"display:inline-block;font-size:20px;font-weight:700;color:#333;line-height:1;text-align:center;\">"
-                + totalMethodsSize + "</span>";
+        String passedBadgeHtml = "<a href=\"#feature-details-table\" title=\"Jump to details\" style=\"text-decoration:none;color:inherit;\">"
+                + "<span style=\"display:inline-block;font-size:20px;font-weight:700;color:#2d6a33;line-height:1;text-align:center;text-decoration:underline;\">"
+                + totalMethodsPassedCount + "</span></a>";
+        String failedBadgeHtml = "<a href=\"#feature-details-table\" title=\"Jump to details\" style=\"text-decoration:none;color:inherit;\">"
+                + "<span style=\"display:inline-block;font-size:20px;font-weight:700;color:#a94442;line-height:1;text-align:center;text-decoration:underline;\">"
+                + totalMethodsFailedCount + "</span></a>";
+        String skippedBadgeHtml = "<a href=\"#feature-details-table\" title=\"Jump to details\" style=\"text-decoration:none;color:inherit;\">"
+                + "<span style=\"display:inline-block;font-size:20px;font-weight:700;color:#7a5b18;line-height:1;text-align:center;text-decoration:underline;\">"
+                + totalMethodsSkippedCount + "</span></a>";
+        String totalBadgeHtml = "<a href=\"#feature-details-table\" title=\"Jump to details\" style=\"text-decoration:none;color:inherit;\">"
+                + "<span style=\"display:inline-block;font-size:20px;font-weight:700;color:#333;line-height:1;text-align:center;text-decoration:underline;\">"
+                + totalMethodsSize + "</span></a>";
         summaryTable = summaryTable.replace("{methodsTotalCount}", totalBadgeHtml)
                 .replace("{passedBadge}", passedBadgeHtml)
                 .replace("{failedBadge}", failedBadgeHtml)
                 .replace("{skippedBadge}", skippedBadgeHtml);
-
+//        htmlBuilder.append("<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#f8fafc\" style=\"background:#f8fafc;width:100%;\"><tr><td>");
         htmlBuilder.append("<br><img src='cid:pie' alt='pie'>");
         htmlBuilder.append("<div class='section' " + SECTION_STYLE + " >")
                 .append("<div class='section-head' " + SECTION_HEAD_STYLE + " >Overall Summary</div>")
@@ -243,13 +319,20 @@ public class TestNGReportParser {
                 .append(featuresTableBuilder)
                 .append("<h2 style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;text-decoration:underline;color:#0b57a4;\">Feature-wise Scenario Execution Details</h2>")
                 .append("<hr style=\"border:none;border-bottom:1px solid #0b57a4;margin:2px 0;\">")
-                .append(scnHtmlBuilder);
-
+                .append(scnHtmlBuilder)
+                .append("<a id=\"feature-details-last\" name=\"feature-details-last\"></a>")
+                    .append("<div style=\"text-align:left;margin-top:8px;margin-bottom:16px;\">"
+                    + "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"display:inline-table;vertical-align:middle;border-collapse:separate;\">"
+                            + "<tr><td style=\"padding:0;\">"
+                            + "<a href=\"#top\" aria-label=\"Back to top\" style=\"display:inline-block;background:linear-gradient(180deg,#eaf4ff 0%,#f0f6ff 100%);color:#0b57a4;text-decoration:none;padding:6px 10px;border-radius:8px;font-weight:700;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1;border:1px solid #d6e9ff;box-shadow:none;\">"
+                    + "&#8679;&nbsp;Back to top"
+                    + "</a></td></tr></table>"
+                        + "</div>");
         htmlBuilder.append("<br><br><footer style=\"font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#555;text-align:center;margin-top:20px;padding-top:10px;border-top:1px solid #ddd;\">")
                 .append("This report was generated automatically by the QE Team.<br>")
                 .append("&copy; ").append(new SimpleDateFormat("yyyy").format(new Date())).append(" QE Team. All rights reserved.")
                 .append("</footer>");
-
+//        htmlBuilder.append("</td></tr></table>");
         System.out.println("---------------------------");
         System.out.println(htmlBuilder);
         System.out.println("---------------------------");
@@ -350,6 +433,15 @@ public class TestNGReportParser {
     }
 
     private static String statusPill(String statusRaw) {
+        return  statusPillCode(statusRaw, 0, 0);
+    }
+    private static String statusPill(String statusRaw, int fontSize, int fontWeight) {
+        return  statusPillCode(statusRaw, fontSize, fontWeight);
+    }
+
+    private static String statusPillCode_1(String statusRaw, int fontSize, int fontWeight){
+         int _fontSize = fontSize == 0 ? 13 : fontSize;
+         int _fontWeight = fontWeight == 0 ? 700 : fontWeight;
         String status = (statusRaw == null) ? "UNKNOWN" : statusRaw.toUpperCase();
         String bg = "#f2f2f2", color = "#333";
         switch (status) {
@@ -363,8 +455,8 @@ public class TestNGReportParser {
                 + "border-radius:999px;"
                 + "background:" + bg + ";"
                 + "color:" + color + ";"
-                + "font-weight:700;"
-                + "font-size:15px;"
+                + "font-weight:"+fontWeight+";"
+                + "font-size:"+fontSize+"px;"
                 + "min-width:80px;"
                 + "text-align:center;"
                 + "line-height:1.2;"
@@ -372,4 +464,46 @@ public class TestNGReportParser {
                 + "box-shadow:0 2px 6px #e2e8f0;\">"
                 + escapeHtml(status) + "</span>";
     }
+
+    private static String statusPillCode(String statusRaw, int fontSize, int fontWeight){
+        int _fontSize = fontSize == 0 ? 12 : fontSize;
+        int _fontWeight = fontWeight == 0 ? 700 : fontWeight;
+        String fontWeightCss = (_fontWeight >= 700) ? "bold" : String.valueOf(_fontWeight);
+
+        System.out.println("font weight "+ fontWeight);
+        System.out.println("font fontWeightCss "+ fontWeightCss);
+        String status = (statusRaw == null) ? "UNKNOWN" : statusRaw.toUpperCase();
+        String bg = "#f2f2f2", color = "#333";
+        switch (status) {
+            case "PASS": bg = "#e9f7ec"; color = "#1f7a3a"; break;
+            case "FAIL": bg = "#fdecea"; color = "#d32f2f"; break;
+            case "SKIP": bg = "#fff8e6"; color = "#f9a825"; break;
+            default: bg = "#eef2f5"; color = "#475569";
+        }
+
+        // Outlook-friendly pill: use a single-cell table with bgcolor and inline padding.
+        StringBuilder pill = new StringBuilder();
+        pill.append("<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"display:inline-block;vertical-align:middle;border-collapse:separate;\">")
+                .append("<tr>")
+                .append("<td align=\"center\" valign=\"middle\" bgcolor=\"").append(bg).append("\"")
+                .append(" style=\"padding:6px 12px; background:").append(bg).append("; color:").append(color)
+                .append("; font-weight:").append("bold").append("; font-size:").append(_fontSize).append("px;")
+                .append("font-family:Arial,Helvetica,sans-serif; line-height:1; text-align:center;")
+                .append("border-radius:999px; -webkit-border-radius:999px; -moz-border-radius:999px;")
+                .append("mso-border-alt:0; mso-padding-alt:6px 12px;\">");
+
+        String content = escapeHtml(status);
+//        if (_fontWeight >= 700) {
+//            // ensure Outlook renders bold by using semantic tag
+//            content = "<strong style=\"font-weight:inherit;\">" + content + "</strong>";
+//        }
+        content = "<strong style=\"font-weight:inherit;\">" + content + "</strong>";
+        pill.append(content)
+                .append("</td>")
+                .append("</tr>")
+                .append("</table>");
+
+        return pill.toString();
+    }
+
 }
