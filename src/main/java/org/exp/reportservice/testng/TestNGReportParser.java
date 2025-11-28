@@ -78,7 +78,7 @@ public class TestNGReportParser {
          final String SECTION_STYLE = "style=\"background:#f8fafc;border-radius:8px;padding:20px;margin:16px 0;box-shadow:0 2px 8px #e2e8f0;\"";
          final String SECTION_HEAD_STYLE = "style=\"font-size:20px;font-weight:700;color:#0b57a4;margin-bottom:8px;font-family:Arial,Helvetica,sans-serif;\"";
          final String SECTION_BODY_STYLE = "style=\"font-size:14px;color:#16325c;font-family:Arial,Helvetica,sans-serif;\"";
-        htmlBuilder.append("<a id=\"top\" name=\"top\"></a>");
+        htmlBuilder.append("<a id=\"reportDetails\" name=\"reportDetails\"></a>");
         htmlBuilder.append("<table width=\"100%\" border=\"0\" cellpadding=\"8\" cellspacing=\"0\" bgcolor=\"#f8fafc\" style=\"background:#f8fafc;width:100%;border:1px solid #e6eef6;\">");
 //        htmlBuilder.append("<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#f8fafc\" style=\"background:#f8fafc;width:100%;\"><tr><td>");
         htmlBuilder.append("<div id=\"top\" class=\"headerPart\" style=\""
@@ -324,7 +324,7 @@ public class TestNGReportParser {
                     .append("<div style=\"text-align:left;margin-top:8px;margin-bottom:16px;\">"
                     + "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"display:inline-table;vertical-align:middle;border-collapse:separate;\">"
                             + "<tr><td style=\"padding:0;\">"
-                            + "<a href=\"#top\" aria-label=\"Back to top\" style=\"display:inline-block;background:linear-gradient(180deg,#eaf4ff 0%,#f0f6ff 100%);color:#0b57a4;text-decoration:none;padding:6px 10px;border-radius:8px;font-weight:700;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1;border:1px solid #d6e9ff;box-shadow:none;\">"
+                            + "<a href=\"#reportDetails\" aria-label=\"Back to top\" title=\"Jump to top of the report\" style=\"display:inline-block;background:linear-gradient(180deg,#eaf4ff 0%,#f0f6ff 100%);color:#0b57a4;text-decoration:none;padding:6px 10px;border-radius:8px;font-weight:700;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1;border:1px solid #d6e9ff;box-shadow:none;\">"
                     + "&#8679;&nbsp;Back to top"
                     + "</a></td></tr></table>"
                         + "</div>");
