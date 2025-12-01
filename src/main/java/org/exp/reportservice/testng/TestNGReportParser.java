@@ -30,75 +30,31 @@ public class TestNGReportParser {
     }
 
     public static StringBuilder parser(String applicationName, Path testNgResultsXml) throws Exception {
-         StringBuilder htmlBuilder = new StringBuilder();
-         String formattedDate = new SimpleDateFormat("d-MMM-yyyy").format(new Date());
+        StringBuilder htmlBuilder = new StringBuilder();
+        String formattedDate = new SimpleDateFormat("d-MMM-yyyy").format(new Date());
 
 
-       final String TABLE_STYLE = "border-collapse:separate;font-family:Arial,sans-serif;font-size:12px;width:100%;background:#ffffff;border-radius:8px;overflow:hidden;border-spacing:0;";
-       final String TH_STYLE = "style=\"background:#fbfdff;color:#0b2b4a;padding:12px 10px;border-bottom:3px solid #e6eef6;border-right:1px solid #eef3fb;text-align:left;font-weight:700;font-size:12px;letter-spacing:0.6px;text-transform:uppercase;\"";
-      final String TD_STYLE = "style=\"padding:10px 8px;border:1px solid #eef3fb;text-align:left;vertical-align:top;color:#223047;background:#ffffff;font-size:13px;\"";
-
-//        final String TABLE_STYLE = "width:100%;font-family:Arial,sans-serif;font-size:13px;background:#ffffff;border:1px solid #e6eef6;";
-
-//Dark color
-//        final String TH_STYLE = "style=\"background-color:#0b57a4;"
-//                + "background:linear-gradient(90deg,#0b57a4 0%,#2196f3 100%);"
-//                + "color:#ffffff !important;"
-//                + "-webkit-text-fill-color:#ffffff;"
-//                + "padding:14px 10px;"
-//                + "border-bottom:3px solid #1565c0;"
-//                + "border-right:1px solid #e6eef6;"
-//                + "text-align:left;"
-//                + "font-weight:bold;"
-//                + "font-size:15px;"
-//                + "letter-spacing:1px;"
-//                + "text-shadow:0 1px 2px rgba(11,43,74,0.13);"
-//                + "font-family:Arial,sans-serif;\"";
-
-        // Light color
-//        final String TH_STYLE = "style=\"background-color:#eaf4ff;"
-//                + "background:linear-gradient(90deg,#cfe9ff 0%,#eaf4ff 100%);"
-//                + "color:#08325a !important;"
-//                + "-webkit-text-fill-color:#08325a;"
-//                + "padding:12px 10px;"
-//                + "border-bottom:2px solid #c6e0ff;"
-//                + "border-right:1px solid #e6eef6;"
-//                + "text-align:left;"
-//                + "font-weight:700;"
-//                + "font-size:15px;"
-//                + "letter-spacing:0.6px;"
-//                + "text-shadow:0 1px 0 rgba(255,255,255,0.6);"
-//                + "font-family:Arial,sans-serif;\"";
-//        final String TD_STYLE = "style=\"padding:8px 6px;border-bottom:1px solid #e6eef6;border-right:1px solid #e6eef6;text-align:left;color:#223047;background:#ffffff;font-size:13px;\"";
-
+        final String TABLE_STYLE = "border-collapse:separate;font-family:Arial,sans-serif;font-size:12px;width:100%;background:#ffffff;border-radius:8px;overflow:hidden;border-spacing:0;";
+        final String TH_STYLE = "style=\"background-color:#0b57a4;color:#fff;padding:12px 10px;border-bottom:2px solid #1565c0;border-right:1px solid #e6eef6;text-align:left;font-weight:bold;font-size:14px;font-family:Arial,sans-serif;\"";
+        final String TD_STYLE = "style=\"padding:10px 8px;border:1px solid #eef3fb;text-align:left;vertical-align:top;color:#223047;background:#ffffff;font-size:13px;\"";
         final String TABLE_ATTR = "border=\"0\" cellpadding=\"6\" cellspacing=\"0\"";
-//
-         final String CAPTION_STYLE = "style=\"text-align:left;font-weight:700;padding:8px 6px;font-size:13px;color:#0b2b4a;\"";
-         // Styles for sections and headings
-         final String SECTION_STYLE = "style=\"background:#f8fafc;border-radius:8px;padding:20px;margin:16px 0;box-shadow:0 2px 8px #e2e8f0;\"";
-         final String SECTION_HEAD_STYLE = "style=\"font-size:20px;font-weight:700;color:#0b57a4;margin-bottom:8px;font-family:Arial,Helvetica,sans-serif;\"";
-         final String SECTION_BODY_STYLE = "style=\"font-size:14px;color:#16325c;font-family:Arial,Helvetica,sans-serif;\"";
+        final String CAPTION_STYLE = "style=\"text-align:left;font-weight:700;padding:8px 6px;font-size:13px;color:#0b2b4a;\"";
+        // Styles for sections and headings
+        final String SECTION_STYLE = "style=\"background:#f8fafc;border-radius:8px;padding:20px;margin:16px 0;box-shadow:0 2px 8px #e2e8f0;\"";
+        final String SECTION_HEAD_STYLE = "style=\"font-size:20px;font-weight:700;color:#0b57a4;margin-bottom:8px;font-family:Arial,Helvetica,sans-serif;\"";
+        final String SECTION_BODY_STYLE = "style=\"font-size:14px;color:#16325c;font-family:Arial,Helvetica,sans-serif;\"";
         htmlBuilder.append("<a id=\"reportDetails\" name=\"reportDetails\"></a>");
         htmlBuilder.append("<table width=\"100%\" border=\"0\" cellpadding=\"8\" cellspacing=\"0\" bgcolor=\"#f8fafc\" style=\"background:#f8fafc;width:100%;border:1px solid #e6eef6;\">");
 //        htmlBuilder.append("<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#f8fafc\" style=\"background:#f8fafc;width:100%;\"><tr><td>");
-        htmlBuilder.append("<div id=\"top\" class=\"headerPart\" style=\""
-                + "font-family:Arial,sans-serif;"
-                + "margin-bottom:20px;"
-                + "border:1px solid #e6eef6;"
-                + "padding:24px;"
-                + "border-radius:12px;"
-                + "background:#f0f6ff;"
-                + "color:#223047;"
-                + "text-align:left;"
-                + "\">"
-                + "<h1 style=\"font-size:22px;margin:0 0 10px 0;color:#0b1220;font-weight:bold;\">Automation Test Execution Report</h1>"
-                + "<p style=\"margin:0;font-size:14px;color:#555;line-height:1.6;\">"
-                + "<b>Application:</b> " + applicationName
-                + " &nbsp;&nbsp; <b>Date:</b> " + formattedDate
-                + " &nbsp;&nbsp; <b>Executed By:</b> QE Team"
-                + "</p>"
-                + "<hr style=\"border:none;border-top:1px solid #e6eef6;margin:16px 0;\">"
-                + "</div>");
+        htmlBuilder.append("<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background:#f0f6ff;border:1px solid #e6eef6;width:100%;\">")
+                .append("<tr><td align=\"left\" style=\"padding:20px;font-family:Arial,Helvetica,sans-serif;color:#223047;\">")
+                .append("<div style=\"font-size:22px;font-weight:700;color:#0b1220;line-height:1.2;margin:0 0 8px 0;\">Automation Test Execution Report</div>")
+                .append("<div style=\"font-size:13px;color:#475569;line-height:1.4;margin:0;\">")
+                .append("<strong style=\"font-weight:700;\">Application:</strong> ").append(escapeHtml(applicationName))
+                .append(" &nbsp;&nbsp; <strong style=\"font-weight:700;\">Date:</strong> ").append(formattedDate)
+                .append(" &nbsp;&nbsp; <strong style=\"font-weight:700;\">Executed By:</strong> QE Team")
+                .append("</div>")
+                .append("</td></tr></table>");
 
         String summaryTable =
                 "<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family:Arial,sans-serif;margin-bottom:16px;\">"
@@ -169,7 +125,7 @@ public class TestNGReportParser {
                     .append("<th " + TH_STYLE + ">Class Name</th>")
                     .append("<th " + TH_STYLE + ">Method Name</th>")
                     .append("<th " + TH_STYLE + ">Status</th>")
-                    .append("<th " + TH_STYLE + ">Time (ms)</th>")
+                    .append("<th " + TH_STYLE + ">Time (ms/s)</th>")
                     .append("</tr>");
 
             String createTestName = "<tr>\n" + "<td colspan=\"8\" " + TD_STYLE + " style=\"text-align:center;color:lightcoral;font-weight:bold;\">" + suiteElement.getAttribute("name") + "(" + suiteElement.getAttribute("duration-ms") + ")</td>\n" + "</tr>";
@@ -185,10 +141,26 @@ public class TestNGReportParser {
                 int methodsSkippedCount = 0;
                 Element testElement = (Element) suite_testNodes;
                 String testName = testElement.getAttribute("name");
-                String testDurationMS = testElement.getAttribute("duration-ms");
+                String testDurationMS;
+                String durationAttr = testElement.getAttribute("duration-ms");
+                if (durationAttr == null || durationAttr.isEmpty()) {
+                    testDurationMS = "";
+                } else {
+                    try {
+                        long durationMs = Long.parseLong(durationAttr);
+                        if (durationMs < 1000) {
+                            testDurationMS = durationMs + " ms";
+                        } else {
+                            long durationSec = durationMs / 1000;
+                            testDurationMS = durationSec + " s";
+                        }
+                    } catch (NumberFormatException e) {
+                        testDurationMS = durationAttr;
+                    }
+                }
                 String testStatus = getTestMethodStatus(testElement);
                 String color = testStatus.equalsIgnoreCase("fail") ? "red" : "green";
-                createTestName += " <tr>\n" + "<td " + TD_STYLE + ">" + testName + "</td>\n" + "<td " + TD_STYLE + " style=\"text-align:center;\">-----</td>" + "<td " + TD_STYLE + " style=\"color:" + color + ";font-weight:bold;\">" + statusPill(testStatus) + "</td>\n" + "<td " + TD_STYLE + "> " + testDurationMS + " </td>\n" + "</tr>";
+                createTestName += " <tr>\n" + "<td " + TD_STYLE + ">" + testName + "</td>\n" + "<td " + TD_STYLE + " style=\"text-align:left;\">&nbsp;</td>" + "<td " + TD_STYLE + " style=\"color:" + color + ";font-weight:bold;\">" + statusPill(testStatus) + "</td>\n" + "<td " + TD_STYLE + "> " + testDurationMS + " </td>\n" + "</tr>";
                 //loop through classes
                 NodeList testClasses = testElement.getElementsByTagName("class");//get all classes in tests
 
@@ -242,7 +214,8 @@ public class TestNGReportParser {
                         // Build a full row for this method and append to class buffer
                         classRowsBuilder.append("<tr>");
                         classRowsBuilder.append("<td " + TD_STYLE + ">").append("").append("</td>");
-                        classRowsBuilder.append("<td " + TD_STYLE + "><div style=\"text-align:center;\">").append("-----").append("</div></td>");
+//                        classRowsBuilder.append("<td " + TD_STYLE + "><div style=\"text-align:center;\">").append("&nbsp;").append("</div></td>");
+                        classRowsBuilder.append("<td " + TD_STYLE + " align=\"center\">").append("&nbsp;").append("</td>");
                         classRowsBuilder.append("<td " + TD_STYLE + ">").append(escapeHtml(testMethodName)).append("</td>");
                         classRowsBuilder.append("<td " + TD_STYLE + ">").append(statusPill(methodStatus, 10, 1200)).append("</td>");
                         classRowsBuilder.append("<td " + TD_STYLE + ">").append("").append("</td>");
@@ -257,18 +230,17 @@ public class TestNGReportParser {
                     // Prepend the header rows for test and class (only once per class)
                     scnHtmlBuilder.append("<a id=\"feature-details-table\" name=\"feature-details-table\"></a>");
                     scnHtmlBuilder.append("<tr id=\"abc\">");
-                    System.out.println(firstRowForTest);
                     scnHtmlBuilder.append("<td " + TD_STYLE + ">").append(firstRowForTest ? escapeHtml(testName) : "").append("</td>");
-                    scnHtmlBuilder.append("<td " + TD_STYLE + "><div style=\"text-align:center;\">").append("-----").append("</div></td>");
-                    scnHtmlBuilder.append("<td " + TD_STYLE + "><div style=\"text-align:center;\">").append("-----").append("</div></td>");
+                    scnHtmlBuilder.append("<td " + TD_STYLE + "><div style=\"text-align:left;\">").append("&nbsp;").append("</div></td>");
+                    scnHtmlBuilder.append("<td " + TD_STYLE + "><div style=\"text-align:left;\">").append("&nbsp;").append("</div></td>");
                     scnHtmlBuilder.append("<td " + TD_STYLE + ">").append(firstRowForTest ? statusPill(testStatus) : "").append("</td>");
                     scnHtmlBuilder.append("<td " + TD_STYLE + ">").append(firstRowForTest ? testDurationMS : "").append("</td>");
                     scnHtmlBuilder.append("</tr>");
 
                     scnHtmlBuilder.append("<tr>");
-                    scnHtmlBuilder.append("<td " + TD_STYLE + "><div style=\"text-align:center;\">").append("").append("</div></td>");
-                    scnHtmlBuilder.append("<td " + TD_STYLE + "><div style=\"text-align:center;\">").append(escapeHtml(testClassName)).append("</div></td>");
-                    scnHtmlBuilder.append("<td " + TD_STYLE + "><div style=\"text-align:center;\">").append("-----").append("</div></td>");
+                    scnHtmlBuilder.append("<td " + TD_STYLE + "><div style=\"text-align:left;\">").append("").append("</div></td>");
+                    scnHtmlBuilder.append("<td " + TD_STYLE + "><div style=\"text-align:left;\">").append(escapeHtml(testClassName)).append("</div></td>");
+                    scnHtmlBuilder.append("<td " + TD_STYLE + "><div style=\"text-align:left;\">").append("&nbsp;").append("</div></td>");
                     scnHtmlBuilder.append("<td " + TD_STYLE + ">").append(statusPill(classStatus, 11, 1200)).append("</td>");
                     scnHtmlBuilder.append("<td " + TD_STYLE + ">").append("").append("</td>");
                     scnHtmlBuilder.append("</tr>");
@@ -321,12 +293,12 @@ public class TestNGReportParser {
                 .append("<hr style=\"border:none;border-bottom:1px solid #0b57a4;margin:2px 0;\">")
                 .append(scnHtmlBuilder)
                 .append("<a id=\"feature-details-last\" name=\"feature-details-last\"></a>")
-                    .append("<div style=\"text-align:left;margin-top:8px;margin-bottom:16px;\">"
-                    + "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"display:inline-table;vertical-align:middle;border-collapse:separate;\">"
-                            + "<tr><td style=\"padding:0;\">"
-                            + "<a href=\"#reportDetails\" aria-label=\"Back to top\" title=\"Jump to top of the report\" style=\"display:inline-block;background:linear-gradient(180deg,#eaf4ff 0%,#f0f6ff 100%);color:#0b57a4;text-decoration:none;padding:6px 10px;border-radius:8px;font-weight:700;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1;border:1px solid #d6e9ff;box-shadow:none;\">"
-                    + "&#8679;&nbsp;Back to top"
-                    + "</a></td></tr></table>"
+                .append("<div style=\"text-align:left;margin-top:8px;margin-bottom:16px;\">"
+                        + "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"display:inline-table;vertical-align:middle;border-collapse:separate;\">"
+                        + "<tr><td style=\"padding:0;\">"
+                        + "<a href=\"#reportDetails\" aria-label=\"Back to top\" title=\"Jump to top of the report\" style=\"display:inline-block;background:linear-gradient(180deg,#eaf4ff 0%,#f0f6ff 100%);color:#0b57a4;text-decoration:none;padding:6px 10px;border-radius:8px;font-weight:700;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1;border:1px solid #d6e9ff;box-shadow:none;\">"
+                        + "&#8679;&nbsp;Back to top"
+                        + "</a></td></tr></table>"
                         + "</div>");
         htmlBuilder.append("<br><br><footer style=\"font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#555;text-align:center;margin-top:20px;padding-top:10px;border-top:1px solid #ddd;\">")
                 .append("This report was generated automatically by the QE Team.<br>")
@@ -440,8 +412,8 @@ public class TestNGReportParser {
     }
 
     private static String statusPillCode_1(String statusRaw, int fontSize, int fontWeight){
-         int _fontSize = fontSize == 0 ? 13 : fontSize;
-         int _fontWeight = fontWeight == 0 ? 700 : fontWeight;
+        int _fontSize = fontSize == 0 ? 13 : fontSize;
+        int _fontWeight = fontWeight == 0 ? 700 : fontWeight;
         String status = (statusRaw == null) ? "UNKNOWN" : statusRaw.toUpperCase();
         String bg = "#f2f2f2", color = "#333";
         switch (status) {
@@ -470,8 +442,6 @@ public class TestNGReportParser {
         int _fontWeight = fontWeight == 0 ? 700 : fontWeight;
         String fontWeightCss = (_fontWeight >= 700) ? "bold" : String.valueOf(_fontWeight);
 
-        System.out.println("font weight "+ fontWeight);
-        System.out.println("font fontWeightCss "+ fontWeightCss);
         String status = (statusRaw == null) ? "UNKNOWN" : statusRaw.toUpperCase();
         String bg = "#f2f2f2", color = "#333";
         switch (status) {

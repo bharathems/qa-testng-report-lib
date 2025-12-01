@@ -175,12 +175,15 @@ class ChartGenerator {
 //        plot.setRangeGridlinePaint(Color.LIGHT_GRAY);
 
         CategoryAxis domainAxis = plot.getDomainAxis();
-        domainAxis.setCategoryLabelPositions(org.jfree.chart.axis.CategoryLabelPositions.UP_45);
-        domainAxis.setLabelFont(new Font("SansSerif", Font.BOLD, 16));
-        domainAxis.setTickLabelFont(new Font("SansSerif", Font.PLAIN, 12));
-        domainAxis.setAxisLineStroke(new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
-        domainAxis.setTickMarkStroke(new BasicStroke(1.5f));
+        domainAxis.setCategoryLabelPositions(org.jfree.chart.axis.CategoryLabelPositions.createUpRotationLabelPositions(Math.toRadians(30)));
+        domainAxis.setLabelFont(new Font("Arial", Font.BOLD, 14));
+        domainAxis.setTickLabelFont(new Font("Arial", Font.PLAIN, 12));
+        domainAxis.setLabelPaint(new Color(34, 34, 34));
+        domainAxis.setTickLabelPaint(new Color(34, 34, 34));
+        domainAxis.setAxisLineStroke(new BasicStroke(1.5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
+        domainAxis.setTickMarkStroke(new BasicStroke(1.0f));
         domainAxis.setTickMarksVisible(true);
+        domainAxis.setMaximumCategoryLabelWidthRatio(0.6f);
 
         domainAxis.setMaximumCategoryLabelLines(2);
         domainAxis.setCategoryMargin(0.12f);
@@ -211,6 +214,26 @@ class ChartGenerator {
         renderer.setSeriesOutlinePaint(0, Color.WHITE);
         renderer.setSeriesOutlinePaint(1, Color.WHITE);
         renderer.setSeriesOutlinePaint(2, Color.WHITE);
+
+
+        int nonZeroSeries = 0;
+        for (int i = 0; i < 3; i++) {
+            boolean hasData = false;
+            for (int j = 0; j < dataset.getColumnCount(); j++) {
+                Number v = dataset.getValue(i, j);
+                if (v != null && v.intValue() > 0) {
+                    hasData = true;
+                    break;
+                }
+            }
+            if (hasData) nonZeroSeries++;
+        }
+// Make bar thinner if only one status is present
+        if (nonZeroSeries == 1) {
+            renderer.setMaximumBarWidth(0.05); // Thinner bar for single result
+        } else {
+            renderer.setMaximumBarWidth(0.15); // Default for multiple results
+        }
 
 //        renderer.setSeriesPaint(1, new Color(255, 99, 71));   // fail
 
