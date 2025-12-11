@@ -41,11 +41,10 @@ public class TestNGReportParser {
         final String CAPTION_STYLE = "style=\"text-align:left;font-weight:700;padding:8px 6px;font-size:13px;color:#0b2b4a;\"";
         // Styles for sections and headings
         final String SECTION_STYLE = "style=\"background:#f8fafc;border-radius:8px;padding:20px;margin:16px 0;box-shadow:0 2px 8px #e2e8f0;\"";
-        final String SECTION_HEAD_STYLE = "style=\"font-size:20px;font-weight:700;color:#0b57a4;margin-bottom:8px;font-family:Arial,Helvetica,sans-serif;\"";
+        final String SECTION_HEAD_STYLE = "style=\"font-size:18px;font-weight:700;color:#0b57a4;margin-bottom:8px;font-family:Arial,Helvetica,sans-serif;\"";
         final String SECTION_BODY_STYLE = "style=\"font-size:14px;color:#16325c;font-family:Arial,Helvetica,sans-serif;\"";
         htmlBuilder.append("<a id=\"reportDetails\" name=\"reportDetails\"></a>");
         htmlBuilder.append("<table width=\"100%\" border=\"0\" cellpadding=\"8\" cellspacing=\"0\" bgcolor=\"#f8fafc\" style=\"background:#f8fafc;width:100%;border:1px solid #e6eef6;\">");
-//        htmlBuilder.append("<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#f8fafc\" style=\"background:#f8fafc;width:100%;\"><tr><td>");
         htmlBuilder.append("<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background:#f0f6ff;border:1px solid #e6eef6;width:100%;\">")
                 .append("<tr><td align=\"left\" style=\"padding:20px;font-family:Arial,Helvetica,sans-serif;color:#223047;\">")
                 .append("<div style=\"font-size:22px;font-weight:700;color:#0b1220;line-height:1.2;margin:0 0 8px 0;\">Automation Test Execution Report</div>")
@@ -56,7 +55,7 @@ public class TestNGReportParser {
                 .append("</div>")
                 .append("</td></tr></table>");
 
-        String summaryTable =
+        String summaryTableMain =
                 "<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family:Arial,sans-serif;margin-bottom:16px;\">"
                         + "  <tr>"
                         + "    <td style=\"padding:8px;\">"
@@ -83,6 +82,42 @@ public class TestNGReportParser {
                         + "          <td style=\"width:25%;padding:8px;vertical-align:top;\">"
                         + "            <table width=\"100%\" cellpadding=\"10\" cellspacing=\"0\" style=\"background:#fff8e6;border:1px solid #f0e0b8;border-radius:8px;\">"
                         + "              <tr><td style=\"font-size:22px;font-weight:700;color:#7a5b18;text-align:center;\">{skippedBadge}</td></tr>"
+                        + "              <tr><td style=\"font-size:13px;color:#6b592d;text-align:center;\">Skipped</td></tr>"
+                        + "            </table>"
+                        + "          </td>"
+                        + "        </tr>"
+                        + "      </table>"
+                        + "    </td>"
+                        + "  </tr>"
+                        + "</table>";
+
+        String summaryTable =
+                "<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family:Arial,sans-serif;margin-bottom:16px;\">"
+                        + "  <tr>"
+                        + "    <td style=\"padding:6px;\">"
+                        + "      <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;\">"
+                        + "        <tr>"
+                        + "          <td style=\"width:25%;padding:6px;vertical-align:top;\">"
+                        + "            <table width=\"100%\" cellpadding=\"8\" cellspacing=\"0\" style=\"background:#f7f7f7;border:1px solid #e6e6e6;border-radius:8px;\">"
+                        + "              <tr><td style=\"font-size:18px;font-weight:700;color:#333;text-align:center;\">{methodsTotalCount}</td></tr>"
+                        + "              <tr><td style=\"font-size:13px;color:#666;text-align:center;\">Total Methods</td></tr>"
+                        + "            </table>"
+                        + "          </td>"
+                        + "          <td style=\"width:25%;padding:6px;vertical-align:top;\">"
+                        + "            <table width=\"100%\" cellpadding=\"8\" cellspacing=\"0\" style=\"background:#e9f7ec;border:1px solid #d6eed6;border-radius:8px;\">"
+                        + "              <tr><td style=\"font-size:18px;font-weight:700;color:#2d6a33;text-align:center;\">{passedBadge}</td></tr>"
+                        + "              <tr><td style=\"font-size:13px;color:#466b3f;text-align:center;\">Passed</td></tr>"
+                        + "            </table>"
+                        + "          </td>"
+                        + "          <td style=\"width:25%;padding:6px;vertical-align:top;\">"
+                        + "            <table width=\"100%\" cellpadding=\"8\" cellspacing=\"0\" style=\"background:#fdecea;border:1px solid #f3c6c2;border-radius:8px;\">"
+                        + "              <tr><td style=\"font-size:18px;font-weight:700;color:#a94442;text-align:center;\">{failedBadge}</td></tr>"
+                        + "              <tr><td style=\"font-size:13px;color:#8a2b2b;text-align:center;\">Failed</td></tr>"
+                        + "            </table>"
+                        + "          </td>"
+                        + "          <td style=\"width:25%;padding:6px;vertical-align:top;\">"
+                        + "            <table width=\"100%\" cellpadding=\"8\" cellspacing=\"0\" style=\"background:#fff8e6;border:1px solid #f0e0b8;border-radius:8px;\">"
+                        + "              <tr><td style=\"font-size:18px;font-weight:700;color:#7a5b18;text-align:center;\">{skippedBadge}</td></tr>"
                         + "              <tr><td style=\"font-size:13px;color:#6b592d;text-align:center;\">Skipped</td></tr>"
                         + "            </table>"
                         + "          </td>"
@@ -282,13 +317,21 @@ public class TestNGReportParser {
                 .replace("{failedBadge}", failedBadgeHtml)
                 .replace("{skippedBadge}", skippedBadgeHtml);
 //        htmlBuilder.append("<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#f8fafc\" style=\"background:#f8fafc;width:100%;\"><tr><td>");
-        htmlBuilder.append("<br><img src='cid:pie' alt='pie'>");
-        htmlBuilder.append("<div class='section' " + SECTION_STYLE + " >")
-                .append("<div class='section-head' " + SECTION_HEAD_STYLE + " >Overall Summary</div>")
-                .append("<div class='section-body' " + SECTION_BODY_STYLE + " >")
-                .append(summaryTable)
-                .append("</div><br><img src='cid:bar' alt='bar'><br>")
-                .append(featuresTableBuilder)
+//        htmlBuilder.append("<div class='section' " + SECTION_STYLE + " >")
+//                .append("<div class='section-head' " + SECTION_HEAD_STYLE + " >Overall Summary</div>")
+//                .append("<div class='section-body' " + SECTION_BODY_STYLE + " >")
+        htmlBuilder.append("<div class='section' style=\"margin-top:6px;\">")
+            .append("<h2 style=\"font-family:Arial,Helvetica,sans-serif;font-size:18px;text-decoration:underline;color:#0b57a4;margin-top:0;\">Overall Summary</h2>")
+                .append("<div class='section-body'>")
+                .append(summaryTable);
+        htmlBuilder.append("<img src='cid:pie' alt='pie'>");
+//        htmlBuilder.append("<div class='section' " + SECTION_STYLE + " >")
+//                .append("<div class='section-head' " + SECTION_HEAD_STYLE + " >Overall Summary</div>")
+//                .append("<div class='section-body' " + SECTION_BODY_STYLE + " >")
+//                .append(summaryTable)
+        htmlBuilder.append(featuresTableBuilder);
+        htmlBuilder.append("</div><br><img src='cid:bar' alt='bar'><br>")
+//                .append(featuresTableBuilder)
                 .append("<h2 style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;text-decoration:underline;color:#0b57a4;\">Feature-wise Scenario Execution Details</h2>")
                 .append("<hr style=\"border:none;border-bottom:1px solid #0b57a4;margin:2px 0;\">")
                 .append(scnHtmlBuilder)

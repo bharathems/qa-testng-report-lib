@@ -1,8 +1,6 @@
 package org.exp.reportservice.cucumber;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -125,19 +123,12 @@ public class CucumberReportParser {
 
             final String featureAnchor = "feature-" + slug(featureName);
 
-            featureDetailsBlocks.append("<div class='section' id='").append(featureAnchor).append("'>")
-                    .append("<div class='sub-head'>").append(featureName).append("</div>")
-                    .append("<div class='section-body'>")
 
-                    .append("<table class='modern'><thead><tr>")
-                    .append("<th style='width:8%'>S#</th>")
-                    .append("<th>Scenario</th>")
-                    .append("<th style='width:18%'>Status</th>")
-                    .append("</tr></thead><tbody>");
+            featureDetailsBlocks.append("<table id=\"feature-details\" " + TABLE_ATTR + " style=\"" + TABLE_STYLE + "margin-bottom:12px;\">")
+                .append("<caption " + CAPTION_STYLE + " align=\"left\">"
+                            + " <span style=\"color:#0b57a4;font-weight:700;font-family:Arial,Helvetica,sans-serif;\">FEATURE NAME - </span>" + escapeHtml(featureName) + "</caption>");
 
-
-//            featureDetailsBlocks.append("<table " + TABLE_ATTR + " style=\"" + TABLE_STYLE + "margin-bottom:10px;\">")
-//                    .append("<tr><th " + TH_STYLE + ">S#</th><th " + TH_STYLE + ">Scenario</th><th " + TH_STYLE + ">Status</th></tr>");
+            featureDetailsBlocks.append("<tr><th " + TH_STYLE + ">S#</th><th " + TH_STYLE + ">Scenario</th><th " + TH_STYLE + ">Status</th></tr>");
 
 
             int idx = 1;
@@ -184,15 +175,15 @@ public class CucumberReportParser {
                     scenarioPassedCount++;
                     scenarioSize++;
                 }
-
+//                scnHtmlBuilder.append("<tr><td " + TD_STYLE + " colspan=\"4\" style=\"text-align:center;font-weight:bold;\">").append(suiteName).append("</td></tr>");
                 featureDetailsBlocks.append("<tr>")
-                        .append("<td>").append(idx++).append("</td>")
-                        .append("<td>").append(scenarioName);
+                        .append("<td " + TD_STYLE +" >").append(idx++).append("</td>")
+                        .append("<td " + TD_STYLE +" >").append(scenarioName);
                 if (scenarioDesc != null && !"NA".equalsIgnoreCase(scenarioDesc.trim())) {
                     featureDetailsBlocks.append("<div class='desc'>").append(scenarioDesc).append("</div>");
                 }
                 featureDetailsBlocks.append("</td>")
-                        .append("<td>").append(pill).append("</td>")
+                        .append("<td " + TD_STYLE +" >").append(pill).append("</td>")
                         .append("</tr>");
 
                 results.add(new ScenarioResult(featureName, scenarioId, scenarioName, scenarioDesc, status));
@@ -208,14 +199,13 @@ public class CucumberReportParser {
 // replace the feature name append with this (inside the features loop)
             String safeFeatureName = escapeHtml(featureName.trim());
             featureSummaryRows.append("<tr>")
-                    .append("<td class='feat'>")
-                    .append("<a href='#").append(featureAnchor).append("' style=\"text-decoration:none;color:inherit;display:inline-block;max-width:360px;vertical-align:middle;word-break:break-word;white-space:normal;\">")
-                    .append(safeFeatureName)
+                    .append("<td class='feat'  " + TD_STYLE + " >").append(safeFeatureName)
+                    .append("<a href='#").append(featureAnchor).append("' style=\"text-decoration:none;color:inherit;display:inline-block;max-width:360px;vertical-align:middle;word-break:break-word;white-space:normal;mso-line-height-rule:exactly;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;\">")
                     .append("</a></td>")
-                    .append("<td><span class='pill'>").append(scenarioSize).append("</span></td>")
-                    .append("<td><span class='pill ok'>").append(scenarioPassedCount).append("</span></td>")
-                    .append("<td><span class='pill err'>").append(scenarioFailedCount).append("</span></td>")
-                    .append("<td><span class='pill skp'>").append(scenarioSkippedCount).append("</span></td>")
+                    .append("<td  " + TD_STYLE + " ><span class='pill'>").append(scenarioSize).append("</span></td>")
+                    .append("<td  " + TD_STYLE + " ><span class='pill ok'>").append(scenarioPassedCount).append("</span></td>")
+                    .append("<td  " + TD_STYLE + " ><span class='pill err'>").append(scenarioFailedCount).append("</span></td>")
+                    .append("<td  " + TD_STYLE + " ><span class='pill skp'>").append(scenarioSkippedCount).append("</span></td>")
                     .append("</tr>");
 
             totalScenarioSize += scenarioSize;
@@ -265,7 +255,7 @@ public class CucumberReportParser {
                         + "</table>";
 
         html.append("<div class='section'>")
-                .append("<div class='section-head'>Overall Summary</div>")
+                .append("</br><h2 style=\"font-family:Arial,Helvetica,sans-serif;font-size:18px;text-decoration:underline;color:#0b57a4;\">Overall Summary</h2>")
                 .append("<div class='section-body'>");
         html.append(summaryTable);
         html.append("</div></div>");
@@ -280,19 +270,23 @@ public class CucumberReportParser {
                 .append("</div></div>");
 
         html.append("<div class='section'>")
-                .append("<div class='section-head-teal'>Feature-wise Summary</div>")
+//                .append("<div class='section-head-teal'>Feature-wise Summary</div>")
+                .append("</br><h2 style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;text-decoration:underline;color:#0b57a4;\">Feature-wise Summary</h2>")
                 .append("<div class='section-body'>")
-                .append("<table class='modern'><thead><tr>")
-                .append("<th>Feature/Page</th><th>Total</th><th>Passed</th><th>Failed</th><th>Skipped</th>")
-                .append("</tr></thead><tbody>")
+                .append("<table id=\"feature-details\" " + TABLE_ATTR + " style=\"" + TABLE_STYLE + "margin-bottom:12px;\"><thead><tr>")
+//                .append("<table class='modern'><thead><tr>")
+                .append("<th " + TH_STYLE + ">Feature/Page</th><th " + TH_STYLE + ">Total</th><th " + TH_STYLE + ">Passed</th><th " + TH_STYLE + ">Failed</th><th " + TH_STYLE + ">Skipped</th>")
+                .append("</tr\"></thead><tbody>")
                 .append(featureSummaryRows)
                 .append("</tbody></table>")
                 .append("<div style='height:12px'></div>")
-                .append("<img src='cid:barChart' alt='Feature Summary Chart'>")
+                .append("<br><img src='cid:barChart' alt='Feature Summary Chart'><br>")
                 .append("</div></div>");
 
         html.append("<div class='section' id='details'>")
-                .append("<div class='section-head-teal'>Feature-wise Scenario Execution Details</div>")
+                .append("</br><h2 style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;text-decoration:underline;color:#0b57a4;\">Feature-wise Scenario Execution Details</h2>")
+                .append("<hr style=\"border:none;border-bottom:1px solid #0b57a4;margin:2px 0;\">")
+//                .append("<div class='section-head-teal'>Feature-wise Scenario Execution Details</div>")
                 .append("<div class='section-body'>")
                 .append(featureDetailsBlocks)
                 .append("</div></div>");

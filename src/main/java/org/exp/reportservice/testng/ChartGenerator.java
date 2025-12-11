@@ -122,15 +122,25 @@ class ChartGenerator {
         customLegend.setHorizontalAlignment(org.jfree.chart.ui.HorizontalAlignment.LEFT);
         chart.addSubtitle(customLegend);
 
-        // Title styling
+        plot.setInsets(new org.jfree.chart.ui.RectangleInsets(6.0, 6.0, 30.0, 6.0));
+
         TextTitle chartTitle = chart.getTitle();
         chartTitle.setFont(new Font("SansSerif", Font.BOLD, 16));
-        chartTitle.setPadding(8, 8, 6, 8);
+        chartTitle.setHorizontalAlignment(org.jfree.chart.ui.HorizontalAlignment.CENTER);
+        chartTitle.setPadding(4, 8, 2, 8);
 
-        // Save image
         File output = new File(path);
         int width = 700; // slightly wider to accommodate right legend
-        int height = 380;
+        int height = 360;
+        // Title styling
+//        TextTitle chartTitle = chart.getTitle();
+//        chartTitle.setFont(new Font("SansSerif", Font.BOLD, 16));
+//        chartTitle.setPadding(8, 8, 6, 8);
+//
+//        // Save image
+//        File output = new File(path);
+//        int width = 700; // slightly wider to accommodate right legend
+//        int height = 380;
         ChartUtils.saveChartAsPNG(output, chart, width, height);
         return output;
     }
