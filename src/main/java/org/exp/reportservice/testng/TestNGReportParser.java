@@ -196,6 +196,7 @@ public class TestNGReportParser {
                 String testStatus = getTestMethodStatus(testElement);
                 String color = testStatus.equalsIgnoreCase("fail") ? "red" : "green";
                 createTestName += " <tr>\n" + "<td " + TD_STYLE + ">" + testName + "</td>\n" + "<td " + TD_STYLE + " style=\"text-align:left;\">&nbsp;</td>" + "<td " + TD_STYLE + " style=\"color:" + color + ";font-weight:bold;\">" + statusPill(testStatus) + "</td>\n" + "<td " + TD_STYLE + "> " + testDurationMS + " </td>\n" + "</tr>";
+
                 //loop through classes
                 NodeList testClasses = testElement.getElementsByTagName("class");//get all classes in tests
 
@@ -265,7 +266,9 @@ public class TestNGReportParser {
                     // Prepend the header rows for test and class (only once per class)
                     scnHtmlBuilder.append("<a id=\"feature-details-table\" name=\"feature-details-table\"></a>");
                     scnHtmlBuilder.append("<tr id=\"abc\">");
+                    scnHtmlBuilder.append("<a id=\"feature_"+testName+"\" name=\"feature_"+testName+"\"></a>");
                     scnHtmlBuilder.append("<td " + TD_STYLE + ">").append(firstRowForTest ? escapeHtml(testName) : "").append("</td>");
+
                     scnHtmlBuilder.append("<td " + TD_STYLE + "><div style=\"text-align:left;\">").append("&nbsp;").append("</div></td>");
                     scnHtmlBuilder.append("<td " + TD_STYLE + "><div style=\"text-align:left;\">").append("&nbsp;").append("</div></td>");
                     scnHtmlBuilder.append("<td " + TD_STYLE + ">").append(firstRowForTest ? statusPill(testStatus) : "").append("</td>");
@@ -287,7 +290,7 @@ public class TestNGReportParser {
 
                 String rowBg = (featureRowIndex % 2 == 0) ? "#ffffff" : "#fbfdff";
                 featuresTableBuilder.append("<tr bgcolor=\"" + rowBg + "\">")
-                        .append("<td " + TD_STYLE + ">" + testName.toUpperCase() + "</td>")
+                        .append("<td " + TD_STYLE + "> <a href=\"#feature_" + testName + "\" style=\"text-decoration:underline;color:#223047;font-family:Segoe UI, Arial, Helvetica, sans-serif;font-size:13px;line-height:1.2;font-weight:600;display:inline-block;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;\">" + escapeHtml(testName.toUpperCase()) + "</a></td>")
                         .append("<td " + TD_STYLE + ">" + methodsSize + "</td>")
                         .append("<td " + TD_STYLE + ">" + methodsPassedCount + "</td>")
                         .append("<td " + TD_STYLE + ">" + methodsFailedCount + "</td>")
@@ -320,6 +323,11 @@ public class TestNGReportParser {
 //        htmlBuilder.append("<div class='section' " + SECTION_STYLE + " >")
 //                .append("<div class='section-head' " + SECTION_HEAD_STYLE + " >Overall Summary</div>")
 //                .append("<div class='section-body' " + SECTION_BODY_STYLE + " >")
+        htmlBuilder.append("<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" role=\"presentation\">\n" +
+                "  <tr>\n" +
+                "    <td height=\"6\" style=\"font-size:12px;line-height:6px;mso-line-height-rule:exactly;\">&nbsp;</td>\n" +
+                "  </tr>\n" +
+                "</table>");//Line height before summary
         htmlBuilder.append("<div class='section' style=\"margin-top:6px;\">")
             .append("<h2 style=\"font-family:Arial,Helvetica,sans-serif;font-size:18px;text-decoration:underline;color:#0b57a4;margin-top:0;\">Overall Summary</h2>")
                 .append("<div class='section-body'>")
