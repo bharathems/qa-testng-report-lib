@@ -290,7 +290,7 @@ public class TestNGReportParser {
 
                 String rowBg = (featureRowIndex % 2 == 0) ? "#ffffff" : "#fbfdff";
                 featuresTableBuilder.append("<tr bgcolor=\"" + rowBg + "\">")
-                        .append("<td " + TD_STYLE + "> <a href=\"#feature_" + testName + "\" style=\"text-decoration:underline;color:#223047;font-family:Segoe UI, Arial, Helvetica, sans-serif;font-size:13px;line-height:1.2;font-weight:600;display:inline-block;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;\">" + escapeHtml(testName.toUpperCase()) + "</a></td>")
+                        .append("<td " + TD_STYLE + "> <a href=\"#feature_" + testName + "\" style=\"text-decoration:underline;color:#223047;font-size:13px;line-height:1.2;font-weight:600;\">" + escapeHtml(testName.toUpperCase()) + "</a></td>")
                         .append("<td " + TD_STYLE + ">" + methodsSize + "</td>")
                         .append("<td " + TD_STYLE + ">" + methodsPassedCount + "</td>")
                         .append("<td " + TD_STYLE + ">" + methodsFailedCount + "</td>")
