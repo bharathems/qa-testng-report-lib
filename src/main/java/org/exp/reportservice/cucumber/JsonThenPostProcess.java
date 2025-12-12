@@ -19,10 +19,18 @@ public class JsonThenPostProcess {
         try {
             // Manually trigger the report merging
 //            mergeCucumberJsonReports(); //Optional
-            ReportService.sendReportsInEmail("APP Name", true,
+//            ReportService.sendReportsInEmail("QE will perform post-validation failure analysis and circulate key findings within 45 minutes to all stakeholders." ,
+//                    "APP Name",
+//                    "cucumber-json-report.json",
+//                    "bharath.potlabhatni@experian.com",
+//                    "PRODUCTION Sanity Execution Report ");
+            ReportService.sendReportsInEmail(
+                    "APP Name",
                     "cucumber-json-report.json",
                     "bharath.potlabhatni@experian.com",
                     "PRODUCTION Sanity Execution Report ");
+
+
         } catch (Exception e) {
             System.err.println("Error during report processing: " + e.getMessage());
             e.printStackTrace();

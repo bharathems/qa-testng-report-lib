@@ -31,7 +31,7 @@ public class CucumberReportParser {
                 .replaceAll("(^-|-$)", "");
     }
 
-    public static StringBuilder parseReport(File jsonFile, String applicationName) throws IOException {
+    public static StringBuilder parseReport(File jsonFile, String applicationName, String noteOnFailures) throws IOException {
 //        String platformName = "";
         String formattedDate = new SimpleDateFormat("d-MMM-yyyy").format(new Date());
 
@@ -254,15 +254,21 @@ public class CucumberReportParser {
                         + "  </tr>"
                         + "</table>";
 
-        html.append("<div class='section'>")
-                .append("</br><h2 style=\"font-family:Arial,Helvetica,sans-serif;font-size:18px;text-decoration:underline;color:#0b57a4;\">Overall Summary</h2>")
+        html.append("<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" role=\"presentation\">\n" +
+                "  <tr>\n" +
+                "    <td height=\"6\" style=\"font-size:12px;line-height:6px;mso-line-height-rule:exactly;\">&nbsp;</td>\n" +
+                "  </tr>\n" +
+                "</table>");//Line height before summary
+        html.append("<div class='section' style=\"margin-top:6px;\">")
+                .append("<h2 style=\"font-family:Arial,Helvetica,sans-serif;font-size:18px;text-decoration:underline;color:#0b57a4;margin-top:0;\">Overall Summary</h2>")
                 .append("<div class='section-body'>");
         html.append(summaryTable);
         html.append("</div></div>");
 
 
-        if (totalScenarioFailedCount > 0) {
-            html.append("<div class='note'><b>Note</b>: QE will perform post-validation failure analysis and circulate key findings <b>within 45 minutes</b> to all stakeholders.</div>");
+        if(noteOnFailures!=null && !noteOnFailures.isBlank() && totalScenarioFailedCount > 0) {
+//            html.append("<div class='note'><b>Note</b>: QE will perform post-validation failure analysis and circulate key findings.</div>");
+            html.append("<div class='note'><b>Note</b>: "+noteOnFailures+"</div>");
         }
 
         html.append("<div style='height:12px'></div>")

@@ -13,14 +13,24 @@ import static org.exp.reportservice.testng.TestNGReportParser.testNgResults;
 public class TestExecutionManager {
 
     public static StringBuilder legendHtml = new StringBuilder();
+
     public static void emailTestReports(String applicationName, String mailTo, String mailSubject) {
-        generateAndSendTestNGReports(applicationName, mailTo, mailSubject, null);
-    }
-    public static void emailTestReports(String applicationName, String mailTo, String mailSubject, String optionalFilePath) {
-        generateAndSendTestNGReports(applicationName, mailTo, mailSubject, optionalFilePath);
+        generateAndSendTestNGReports(null, applicationName, mailTo, mailSubject, null);
     }
 
-    public static void generateAndSendTestNGReports(String applicationName, String mailTo, String emailSubject, String optionalFilePath){
+    public static void emailTestReports(String applicationName, String mailTo, String mailSubject, String optionalFilePath) {
+        generateAndSendTestNGReports(null, applicationName, mailTo, mailSubject, optionalFilePath);
+    }
+
+    public static void emailTestReportsWithNote(String optionalNoteOnFailure, String applicationName, String mailTo, String mailSubject, String optionalFilePath) {
+        generateAndSendTestNGReports(optionalNoteOnFailure, applicationName, mailTo, mailSubject, optionalFilePath);
+    }
+
+    public static void emailTestReportsWithNote(String optionalNoteOnFailure, String applicationName, String mailTo, String mailSubject) {
+        generateAndSendTestNGReports(optionalNoteOnFailure, applicationName, mailTo, mailSubject, null);
+    }
+
+    public static void generateAndSendTestNGReports(String noteOnFailure, String applicationName, String mailTo, String emailSubject, String optionalFilePath){
         Path path = Paths.get(System.getProperty("user.dir")).resolve("test-output").resolve("testng-results.xml");
         if (optionalFilePath != null) {
             path = Paths.get(optionalFilePath);
@@ -30,7 +40,7 @@ public class TestExecutionManager {
             Map<String, Integer> statusCounts = new HashMap<>();
             Map<String, Map<String, Integer>> featureMap = new HashMap<>();
 
-            StringBuilder htmlResults = TestNGReportParser.parser(applicationName, path);
+            StringBuilder htmlResults = TestNGReportParser.parser(noteOnFailure, applicationName, path);
             for (TestNGResult res : testNgResults) {
                 statusCounts.put(res.methodStatus, statusCounts.getOrDefault(res.methodStatus, 0) + 1);
                 featureMap.putIfAbsent(res.className, new HashMap<>());
@@ -45,7 +55,8 @@ public class TestExecutionManager {
         }
     }
     public static void main(String[] args) {
-        emailTestReports("C3P",  "bharath.potlabhatni@experian.com", "Production Sanity Execution Report");
+//        emailTestReports("C3P",  "bharath.potlabhatni@experian.com", "Production Sanity Execution Report");
+        emailTestReportsWithNote("QE will perform post-validation failure analysis and circulate key findings.","C3P",  "bharath.potlabhatni@experian.com", "Production Sanity Execution Report");
     }
 
     private static void replacePlaceholder(StringBuilder builder, String placeholder, String replacement) {
