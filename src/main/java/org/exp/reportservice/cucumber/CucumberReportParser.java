@@ -1,102 +1,47 @@
 package org.exp.reportservice.cucumber;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.exp.reportservice.commons.CommonFunctions;
+import org.exp.reportservice.commons.HeaderAndFooter;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.StreamSupport;
 
+import static org.exp.reportservice.commons.HeaderAndFooter.escapeHtml;
+
 
 public class CucumberReportParser {
-
-
     public static List<ScenarioResult> results = new ArrayList<>();
+    private static int totalScenarioSize;
+    private static int totalScenarioPassedCount;
+    private static int totalScenarioFailedCount;
+    private static int totalScenarioSkippedCount;
 
-    static int totalScenarioSize = 0;
-    static int totalScenarioPassedCount = 0;
-    static int totalScenarioFailedCount = 0;
-    static int totalScenarioSkippedCount = 0;
 
-    static int scenarioSize = 0;
-    static int scenarioPassedCount = 0;
-    static int scenarioFailedCount = 0;
-    static int scenarioSkippedCount = 0;
 
-    private static String slug(String s) {
-        return s == null
-                ? ""
-                : s.toLowerCase(Locale.ROOT)
-                .replaceAll("[^a-z0-9]+", "-")
-                .replaceAll("(^-|-$)", "");
-    }
+    private static final String TABLE_STYLE = "border-collapse:separate;font-family:Arial,sans-serif;font-size:12px;width:100%;background:#ffffff;border-radius:8px;overflow:hidden;border-spacing:0;";
+    private static final String TH_STYLE = "style=\"background-color:#0b57a4;color:#fff;padding:12px 10px;border-bottom:2px solid #1565c0;border-right:1px solid #e6eef6;text-align:left;font-weight:bold;font-size:14px;font-family:Arial,sans-serif;\"";
+    private static final String TD_STYLE = "style=\"padding:10px 8px;border:1px solid #eef3fb;text-align:left;vertical-align:top;color:#223047;background:#ffffff;font-size:13px;\"";
+    private static final String TABLE_ATTR = "border=\"0\" cellpadding=\"6\" cellspacing=\"0\"";
+    private static final String CAPTION_STYLE = "style=\"text-align:left;font-weight:700;padding:8px 6px;font-size:13px;color:#0b2b4a;\"";
+
+
 
     public static StringBuilder parseReport(File jsonFile, String applicationName, String noteOnFailures) throws IOException {
-//        String platformName = "";
-        String formattedDate = new SimpleDateFormat("d-MMM-yyyy").format(new Date());
+        int scenarioSize = 0;
+        int scenarioPassedCount = 0;
+        int scenarioFailedCount = 0;
+        int scenarioSkippedCount = 0;
 
         StringBuilder html = new StringBuilder();
         StringBuilder featureSummaryRows = new StringBuilder();
         StringBuilder featureDetailsBlocks = new StringBuilder();
-        final String TABLE_STYLE = "border-collapse:separate;font-family:Arial,sans-serif;font-size:12px;width:100%;background:#ffffff;border-radius:8px;overflow:hidden;border-spacing:0;";
-        final String TH_STYLE = "style=\"background-color:#0b57a4;color:#fff;padding:12px 10px;border-bottom:2px solid #1565c0;border-right:1px solid #e6eef6;text-align:left;font-weight:bold;font-size:14px;font-family:Arial,sans-serif;\"";
-        final String TD_STYLE = "style=\"padding:10px 8px;border:1px solid #eef3fb;text-align:left;vertical-align:top;color:#223047;background:#ffffff;font-size:13px;\"";
-        final String TABLE_ATTR = "border=\"0\" cellpadding=\"6\" cellspacing=\"0\"";
-        final String CAPTION_STYLE = "style=\"text-align:left;font-weight:700;padding:8px 6px;font-size:13px;color:#0b2b4a;\"";
-        // Styles for sections and headings
-        final String SECTION_STYLE = "style=\"background:#f8fafc;border-radius:8px;padding:20px;margin:16px 0;box-shadow:0 2px 8px #e2e8f0;\"";
-        final String SECTION_HEAD_STYLE = "style=\"font-size:20px;font-weight:700;color:#0b57a4;margin-bottom:8px;font-family:Arial,Helvetica,sans-serif;\"";
-        final String SECTION_BODY_STYLE = "style=\"font-size:14px;color:#16325c;font-family:Arial,Helvetica,sans-serif;\"";
 
-        html.append("<html><head><meta charset='utf-8'>")
-                .append("<a id=\"reportDetails\" name=\"reportDetails\"></a>")
-                .append("<style type='text/css'>")
-                .append("body{margin:0;padding:0;background:#f5f7fb;color:#0b1220;font-family:Arial,Helvetica,sans-serif;font-size:13px;}")
-                .append(".wrap{width:100%;max-width:980px;margin:0 auto;padding:14px;}")
-                .append(".card{background:#ffffff;border:1px solid #e3e8f3;border-radius:12px;padding:16px;box-shadow:0 2px 6px rgba(15,23,42,.04);} ")
-                .append(".title{font-size:22px;line-height:1.2;margin:0 0 6px 0;color:#0b1220;font-weight:bold;} ")
-                .append(".meta{margin:0;color:#3a4556;}")
-                .append(".section{background:#ffffff;border:1px solid #e3e8f3;border-radius:12px;padding:0;margin-top:14px;box-shadow:0 2px 6px rgba(15,23,42,.04);} ")
-                .append(".section-head{background:#3b82f6;color:#ffffff;padding:10px 14px;border-radius:12px 12px 0 0;font-weight:bold;letter-spacing:.2px;} ")
-                .append(".section-head-teal{background:#0ea5a4;color:#ffffff;padding:10px 14px;border-radius:12px 12px 0 0;font-weight:bold;letter-spacing:.2px;} ")
-                .append(".section-body{padding:14px;}")
-                .append(".sub-head{background:#f3f6ff;color:#0b1220;padding:10px 14px;border-radius:10px 10px 0 0;border:1px solid #e3e8f3;border-bottom:none;font-weight:bold;}")
-                .append(".kpi-table{width:100%;border-collapse:separate;border-spacing:12px 10px;} ")
-                .append(".kpi{background:#f9fbff;border:1px solid #e3e8f3;border-radius:12px;padding:10px;text-align:center;} ")
-                .append(".kpi-label{font-weight:bold;color:#2e3645;font-size:12px;margin-bottom:6px;} ")
-                .append(".kpi-badge{display:inline-block;border-radius:999px;padding:8px 14px;font-weight:bold;border:1px solid transparent;font-size:14px;text-decoration:none;} ")
-                .append(".b-blue{background:#2880f6;color:#ffffff;border-color:#1e6ee1;} ")
-                .append(".b-green{background:#18c27f;color:#ffffff;border-color:#12a86e;} ")
-                .append(".b-red{background:#ff4d4f;color:#ffffff;border-color:#e13a3c;} ")
-                .append(".b-yellow{background:#ffbd2e;color:#4b3200;border-color:#e6a624;} ")
-                .append(".note{border:1px solid #ffd89c;background:#fff7e6;color:#7a4b00;border-radius:10px;padding:12px 14px;font-weight:bold;margin-top:12px;font-size:15px;} ")
-                .append("table.modern{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border:1px solid #e3e8f3;border-radius:12px;} ")
-                .append("table.modern thead th{background:#eef2ff;color:#0b1220;font-size:12px;font-weight:bold;padding:10px;border-bottom:1px solid #e3e8f3;text-align:left;} ")
-                .append("table.modern td{padding:10px;border-bottom:1px solid #e3e8f3;color:#3a4556;} ")
-                .append("table.modern tbody tr:nth-child(odd) td{background:#fbfcff;} ")
-                .append("table.modern tbody tr:last-child td{border-bottom:none;} ")
-                .append(".feat{font-weight:bold;color:#0b1220;} ")
-                .append(".pill{display:inline-block;border-radius:999px;padding:5px 10px;border:1px solid transparent;font-weight:bold;font-size:12px;} ")
-                .append(".ok{background:#e7f8f1;color:#077a55;border-color:#b6f0dc;} ")
-                .append(".err{background:#ffecec;color:#b42318;border-color:#ffc5c0;} ")
-                .append(".skp{background:#fff7e6;color:#9a5b00;border-color:#ffdca8;} ")
-                .append(".desc{margin-top:2px;font-size:12px;color:#6b7280;} ")
-                .append("a{color:#1d4ed8;text-decoration:underline;} a:link,a:visited{color:#1d4ed8;} ")
-                .append(".kpi-link,.kpi-link:link,.kpi-link:visited,.kpi-link:hover,.kpi-link:active{color:#ffffff !important;text-decoration:underline !important;} ")
-                .append(".u{ text-decoration:underline !important; border-bottom:1px solid rgba(255,255,255,.9); mso-border-alt:solid #ffffff 1px; }")
-                .append(".backtop{font-size:12px;margin-top:10px;} ")
-                .append("</style></head><body><div class='wrap'>");
 
-        html.append("<table width=\"100%\" border=\"0\" cellpadding=\"8\" cellspacing=\"0\" bgcolor=\"#f8fafc\" style=\"background:#f8fafc;width:100%;border:1px solid #e6eef6;\">");
-        html.append("<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background:#f0f6ff;border:1px solid #e6eef6;width:100%;\">")
-                .append("<tr><td align=\"left\" style=\"padding:20px;font-family:Arial,Helvetica,sans-serif;color:#223047;\">")
-                .append("<div style=\"font-size:22px;font-weight:700;color:#0b1220;line-height:1.2;margin:0 0 8px 0;\">Automation Test Execution Report</div>")
-                .append("<div style=\"font-size:13px;color:#475569;line-height:1.4;margin:0;\">")
-                .append("<strong style=\"font-weight:700;\">Application:</strong> ").append(escapeHtml(applicationName))
-                .append(" &nbsp;&nbsp; <strong style=\"font-weight:700;\">Date:</strong> ").append(formattedDate)
-                .append(" &nbsp;&nbsp; <strong style=\"font-weight:700;\">Executed By:</strong> QE Team")
-                .append("</div>")
-                .append("</td></tr></table>");
+        HeaderAndFooter.setHeader(html, applicationName);
 
         ObjectMapper mapper = new ObjectMapper();
         JsonNode root = mapper.readTree(jsonFile);
@@ -175,7 +120,6 @@ public class CucumberReportParser {
                     scenarioPassedCount++;
                     scenarioSize++;
                 }
-//                scnHtmlBuilder.append("<tr><td " + TD_STYLE + " colspan=\"4\" style=\"text-align:center;font-weight:bold;\">").append(suiteName).append("</td></tr>");
                 featureDetailsBlocks.append("<tr>")
                         .append("<td " + TD_STYLE +" >").append(idx++).append("</td>")
                         .append("<td " + TD_STYLE +" >").append(scenarioName);
@@ -190,13 +134,10 @@ public class CucumberReportParser {
             }
 
             featureDetailsBlocks.append("</tbody></table>")
-                    .append("<div class='backtop'><a href='#reportDetails'>&uarr; Back to top</a></div>")
+                    .append("<div class='backtop' style='font-size:12px;margin-top:10px;'><a href='#reportDetails'>&uarr; Back to top</a></div>")
                     .append("</div></div>");
 
-
-
-
-// replace the feature name append with this (inside the features loop)
+            // replace the feature name append with this (inside the features loop)
             String safeFeatureName = escapeHtml(featureName.trim());
             featureSummaryRows.append("<tr>")
                     .append("<td class='feat'  " + TD_STYLE + " >").append(safeFeatureName)
@@ -218,56 +159,15 @@ public class CucumberReportParser {
 
         html.append("<a id='top'></a>");
 
-        String summaryTable =
-                "<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family:Arial,sans-serif;margin-bottom:16px;\">"
-                        + "  <tr>"
-                        + "    <td style=\"padding:6px;\">"
-                        + "      <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;\">"
-                        + "        <tr>"
-                        + "          <td style=\"width:25%;padding:6px;vertical-align:top;\">"
-                        + "            <table width=\"100%\" cellpadding=\"8\" cellspacing=\"0\" style=\"background:#f7f7f7;border:1px solid #e6e6e6;border-radius:8px;\">"
-                        + "              <tr><td style=\"font-size:18px;font-weight:700;color:#333;text-align:center;\">"+totalScenarioSize+"</td></tr>"
-                        + "              <tr><td style=\"font-size:13px;color:#666;text-align:center;\">Total Scenarios</td></tr>"
-                        + "            </table>"
-                        + "          </td>"
-                        + "          <td style=\"width:25%;padding:6px;vertical-align:top;\">"
-                        + "            <table width=\"100%\" cellpadding=\"8\" cellspacing=\"0\" style=\"background:#e9f7ec;border:1px solid #d6eed6;border-radius:8px;\">"
-                        + "              <tr><td style=\"font-size:18px;font-weight:700;color:#2d6a33;text-align:center;\">"+totalScenarioPassedCount+"</td></tr>"
-                        + "              <tr><td style=\"font-size:13px;color:#466b3f;text-align:center;\">Passed</td></tr>"
-                        + "            </table>"
-                        + "          </td>"
-                        + "          <td style=\"width:25%;padding:6px;vertical-align:top;\">"
-                        + "            <table width=\"100%\" cellpadding=\"8\" cellspacing=\"0\" style=\"background:#fdecea;border:1px solid #f3c6c2;border-radius:8px;\">"
-                        + "              <tr><td style=\"font-size:18px;font-weight:700;color:#a94442;text-align:center;\">"+totalScenarioFailedCount+"</td></tr>"
-                        + "              <tr><td style=\"font-size:13px;color:#8a2b2b;text-align:center;\">Failed</td></tr>"
-                        + "            </table>"
-                        + "          </td>"
-                        + "          <td style=\"width:25%;padding:6px;vertical-align:top;\">"
-                        + "            <table width=\"100%\" cellpadding=\"8\" cellspacing=\"0\" style=\"background:#fff8e6;border:1px solid #f0e0b8;border-radius:8px;\">"
-                        + "              <tr><td style=\"font-size:18px;font-weight:700;color:#7a5b18;text-align:center;\">"+totalScenarioSkippedCount+"</td></tr>"
-                        + "              <tr><td style=\"font-size:13px;color:#6b592d;text-align:center;\">Skipped</td></tr>"
-                        + "            </table>"
-                        + "          </td>"
-                        + "        </tr>"
-                        + "      </table>"
-                        + "    </td>"
-                        + "  </tr>"
-                        + "</table>";
+        String overAllSummary = CommonFunctions.overAllSummary().toString()
+                .replace("{methodsTotalCount}", String.valueOf(totalScenarioSize))
+                .replace("{passedBadge}", String.valueOf(totalScenarioPassedCount))
+                .replace("{failedBadge}", String.valueOf(totalScenarioFailedCount))
+                .replace("{skippedBadge}", String.valueOf(totalScenarioSkippedCount));
 
-        html.append("<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" role=\"presentation\">\n" +
-                "  <tr>\n" +
-                "    <td height=\"6\" style=\"font-size:12px;line-height:6px;mso-line-height-rule:exactly;\">&nbsp;</td>\n" +
-                "  </tr>\n" +
-                "</table>");//Line height before summary
-        html.append("<div class='section' style=\"margin-top:6px;\">")
-                .append("<h2 style=\"font-family:Arial,Helvetica,sans-serif;font-size:18px;text-decoration:underline;color:#0b57a4;margin-top:0;\">Overall Summary</h2>")
-                .append("<div class='section-body'>");
-        html.append(summaryTable);
-        html.append("</div></div>");
-
+        html.append(overAllSummary);
 
         if(noteOnFailures!=null && !noteOnFailures.isBlank() && totalScenarioFailedCount > 0) {
-//            html.append("<div class='note'><b>Note</b>: QE will perform post-validation failure analysis and circulate key findings.</div>");
             html.append("<div class='note'><b>Note</b>: "+noteOnFailures+"</div>");
         }
 
@@ -276,11 +176,9 @@ public class CucumberReportParser {
                 .append("</div></div>");
 
         html.append("<div class='section'>")
-//                .append("<div class='section-head-teal'>Feature-wise Summary</div>")
                 .append("</br><h2 style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;text-decoration:underline;color:#0b57a4;\">Feature-wise Summary</h2>")
                 .append("<div class='section-body'>")
                 .append("<table id=\"feature-details\" " + TABLE_ATTR + " style=\"" + TABLE_STYLE + "margin-bottom:12px;\"><thead><tr>")
-//                .append("<table class='modern'><thead><tr>")
                 .append("<th " + TH_STYLE + ">Feature/Page</th><th " + TH_STYLE + ">Total</th><th " + TH_STYLE + ">Passed</th><th " + TH_STYLE + ">Failed</th><th " + TH_STYLE + ">Skipped</th>")
                 .append("</tr\"></thead><tbody>")
                 .append(featureSummaryRows)
@@ -292,18 +190,12 @@ public class CucumberReportParser {
         html.append("<div class='section' id='details'>")
                 .append("</br><h2 style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;text-decoration:underline;color:#0b57a4;\">Feature-wise Scenario Execution Details</h2>")
                 .append("<hr style=\"border:none;border-bottom:1px solid #0b57a4;margin:2px 0;\">")
-//                .append("<div class='section-head-teal'>Feature-wise Scenario Execution Details</div>")
                 .append("<div class='section-body'>")
                 .append(featureDetailsBlocks)
                 .append("</div></div>");
 
 
-        html.append("<br><br><footer style=\"font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#555;text-align:center;margin-top:20px;padding-top:10px;border-top:1px solid #ddd;\">")
-                .append("This report was generated automatically by the QE Team.<br>")
-                .append("&copy; ").append(new SimpleDateFormat("yyyy").format(new Date())).append(" QE Team. All rights reserved.")
-                .append("</footer>")
-                .append("</div></body></html>");;
-
+        HeaderAndFooter.setFooter(html);
         return html;
     }
 
@@ -318,13 +210,12 @@ public class CucumberReportParser {
         return true;
     }
 
-    // add helper (place near other private methods)
-    private static String escapeHtml(String s) {
-        if (s == null) return "";
-        return s.replace("&", "&amp;")
-                .replace("<", "&lt;")
-                .replace(">", "&gt;")
-                .replace("\"", "&quot;")
-                .replace("'", "&#39;");
+    private static String slug(String s) {
+        return s == null
+                ? ""
+                : s.toLowerCase(Locale.ROOT)
+                .replaceAll("[^a-z0-9]+", "-")
+                .replaceAll("(^-|-$)", "");
     }
+
 }

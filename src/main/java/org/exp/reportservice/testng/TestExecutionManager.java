@@ -55,8 +55,15 @@ public class TestExecutionManager {
         }
     }
     public static void main(String[] args) {
-//        emailTestReports("C3P",  "bharath.potlabhatni@experian.com", "Production Sanity Execution Report");
-        emailTestReportsWithNote("QE will perform post-validation failure analysis and circulate key findings.","C3P",  "bharath.potlabhatni@experian.com", "Production Sanity Execution Report");
+        emailTestReports("C3P",
+                "bharath.potlabhatni@experian.com",
+                "Production Sanity Execution Report",
+        null);
+        emailTestReportsWithNote(
+                "QE will perform post-validation failure analysis and circulate key findings.",
+                "C3P",
+                "bharath.potlabhatni@experian.com",
+                "Production Sanity Execution Report");
     }
 
     private static void replacePlaceholder(StringBuilder builder, String placeholder, String replacement) {

@@ -1,6 +1,8 @@
 // java
 package org.exp.reportservice.testng;
 
+import org.exp.reportservice.commons.*;
+import org.exp.reportservice.commons.HeaderAndFooter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -14,6 +16,9 @@ import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static org.exp.reportservice.commons.CommonFunctions.overAllSummary;
+import static org.exp.reportservice.commons.HeaderAndFooter.*;
+
 
 public class TestNGReportParser {
 
@@ -23,75 +28,19 @@ public class TestNGReportParser {
     static int totalMethodsFailedCount = 0;
     static int totalMethodsSkippedCount = 0;
     static List<TestNGResult> testNgResults = new ArrayList<>();
-
-    // Helper to create an inline badge compatible with email clients (Outlook-friendly)
-    private static String badge(String text, String bgColor, String textColor) {
-        return "<span style=\"display:inline-block;padding:4px 8px;margin:0;border-radius:4px;background:" + bgColor
-                + ";color:" + textColor + ";font-size:12px;font-weight:bold;border:1px solid rgba(0,0,0,0.06);\">" + text + "</span>";
-    }
+    static final String TABLE_STYLE = "border-collapse:separate;font-family:Arial,sans-serif;font-size:12px;width:100%;background:#ffffff;border-radius:8px;overflow:hidden;border-spacing:0;";
+    static final String TH_STYLE = "style=\"background-color:#0b57a4;color:#fff;padding:12px 10px;border-bottom:2px solid #1565c0;border-right:1px solid #e6eef6;text-align:left;font-weight:bold;font-size:14px;font-family:Arial,sans-serif;\"";
+    static final String TD_STYLE = "style=\"padding:10px 8px;border:1px solid #eef3fb;text-align:left;vertical-align:top;color:#223047;background:#ffffff;font-size:13px;\"";
+    static final String TABLE_ATTR = "border=\"0\" cellpadding=\"6\" cellspacing=\"0\"";
+    static final String CAPTION_STYLE = "style=\"text-align:left;font-weight:700;padding:8px 6px;font-size:13px;color:#0b2b4a;\"";
 
     public static StringBuilder parser(String noteOnFailure, String applicationName, Path testNgResultsXml) throws Exception {
         StringBuilder htmlBuilder = new StringBuilder();
-        String formattedDate = new SimpleDateFormat("d-MMM-yyyy").format(new Date());
 
+        HeaderAndFooter.setHeader(htmlBuilder, applicationName);
+        String summaryTable = overAllSummary().toString();
 
-        final String STYLE_NOTE = "style=\"note{border:1px solid #ffd89c;background:#fff7e6;color:#7a4b00;border-radius:10px;padding:12px 14px;font-weight:bold;margin-top:12px;font-size:15px;}\"";
-        final String TABLE_STYLE = "border-collapse:separate;font-family:Arial,sans-serif;font-size:12px;width:100%;background:#ffffff;border-radius:8px;overflow:hidden;border-spacing:0;";
-        final String TH_STYLE = "style=\"background-color:#0b57a4;color:#fff;padding:12px 10px;border-bottom:2px solid #1565c0;border-right:1px solid #e6eef6;text-align:left;font-weight:bold;font-size:14px;font-family:Arial,sans-serif;\"";
-        final String TD_STYLE = "style=\"padding:10px 8px;border:1px solid #eef3fb;text-align:left;vertical-align:top;color:#223047;background:#ffffff;font-size:13px;\"";
-        final String TABLE_ATTR = "border=\"0\" cellpadding=\"6\" cellspacing=\"0\"";
-        final String CAPTION_STYLE = "style=\"text-align:left;font-weight:700;padding:8px 6px;font-size:13px;color:#0b2b4a;\"";
-        // Styles for sections and headings
-        final String SECTION_STYLE = "style=\"background:#f8fafc;border-radius:8px;padding:20px;margin:16px 0;box-shadow:0 2px 8px #e2e8f0;\"";
-        final String SECTION_HEAD_STYLE = "style=\"font-size:18px;font-weight:700;color:#0b57a4;margin-bottom:8px;font-family:Arial,Helvetica,sans-serif;\"";
-        final String SECTION_BODY_STYLE = "style=\"font-size:14px;color:#16325c;font-family:Arial,Helvetica,sans-serif;\"";
-        htmlBuilder.append("<a id=\"reportDetails\" name=\"reportDetails\"></a>");
-        htmlBuilder.append("<table width=\"100%\" border=\"0\" cellpadding=\"8\" cellspacing=\"0\" bgcolor=\"#f8fafc\" style=\"background:#f8fafc;width:100%;border:1px solid #e6eef6;\">");
-        htmlBuilder.append("<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background:#f0f6ff;border:1px solid #e6eef6;width:100%;\">")
-                .append("<tr><td align=\"left\" style=\"padding:20px;font-family:Arial,Helvetica,sans-serif;color:#223047;\">")
-                .append("<div style=\"font-size:22px;font-weight:700;color:#0b1220;line-height:1.2;margin:0 0 8px 0;\">Automation Test Execution Report</div>")
-                .append("<div style=\"font-size:13px;color:#475569;line-height:1.4;margin:0;\">")
-                .append("<strong style=\"font-weight:700;\">Application:</strong> ").append(escapeHtml(applicationName))
-                .append(" &nbsp;&nbsp; <strong style=\"font-weight:700;\">Date:</strong> ").append(formattedDate)
-                .append(" &nbsp;&nbsp; <strong style=\"font-weight:700;\">Executed By:</strong> QE Team")
-                .append("</div>")
-                .append("</td></tr></table>");
-
-        String summaryTable =
-                "<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family:Arial,sans-serif;margin-bottom:16px;\">"
-                        + "  <tr>"
-                        + "    <td style=\"padding:6px;\">"
-                        + "      <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;\">"
-                        + "        <tr>"
-                        + "          <td style=\"width:25%;padding:6px;vertical-align:top;\">"
-                        + "            <table width=\"100%\" cellpadding=\"8\" cellspacing=\"0\" style=\"background:#f7f7f7;border:1px solid #e6e6e6;border-radius:8px;\">"
-                        + "              <tr><td style=\"font-size:18px;font-weight:700;color:#333;text-align:center;\">{methodsTotalCount}</td></tr>"
-                        + "              <tr><td style=\"font-size:13px;color:#666;text-align:center;\">Total Methods</td></tr>"
-                        + "            </table>"
-                        + "          </td>"
-                        + "          <td style=\"width:25%;padding:6px;vertical-align:top;\">"
-                        + "            <table width=\"100%\" cellpadding=\"8\" cellspacing=\"0\" style=\"background:#e9f7ec;border:1px solid #d6eed6;border-radius:8px;\">"
-                        + "              <tr><td style=\"font-size:18px;font-weight:700;color:#2d6a33;text-align:center;\">{passedBadge}</td></tr>"
-                        + "              <tr><td style=\"font-size:13px;color:#466b3f;text-align:center;\">Passed</td></tr>"
-                        + "            </table>"
-                        + "          </td>"
-                        + "          <td style=\"width:25%;padding:6px;vertical-align:top;\">"
-                        + "            <table width=\"100%\" cellpadding=\"8\" cellspacing=\"0\" style=\"background:#fdecea;border:1px solid #f3c6c2;border-radius:8px;\">"
-                        + "              <tr><td style=\"font-size:18px;font-weight:700;color:#a94442;text-align:center;\">{failedBadge}</td></tr>"
-                        + "              <tr><td style=\"font-size:13px;color:#8a2b2b;text-align:center;\">Failed</td></tr>"
-                        + "            </table>"
-                        + "          </td>"
-                        + "          <td style=\"width:25%;padding:6px;vertical-align:top;\">"
-                        + "            <table width=\"100%\" cellpadding=\"8\" cellspacing=\"0\" style=\"background:#fff8e6;border:1px solid #f0e0b8;border-radius:8px;\">"
-                        + "              <tr><td style=\"font-size:18px;font-weight:700;color:#7a5b18;text-align:center;\">{skippedBadge}</td></tr>"
-                        + "              <tr><td style=\"font-size:13px;color:#6b592d;text-align:center;\">Skipped</td></tr>"
-                        + "            </table>"
-                        + "          </td>"
-                        + "        </tr>"
-                        + "      </table>"
-                        + "    </td>"
-                        + "  </tr>"
-                        + "</table>";
+        System.out.println(summaryTable);
 
         // Use alternating row backgrounds for the feature summary table (email-friendly using bgcolor)
         StringBuilder featuresTableBuilder = new StringBuilder();
@@ -171,8 +120,7 @@ public class TestNGReportParser {
                     if (testClass_nodes.getNodeType() != Node.ELEMENT_NODE) continue;
                     Element testClassesElement = (Element) testClass_nodes;
                     String testClassName = testClassesElement.getAttribute("name");// class name
-//                    String simpleClassName = (testClassName == null) ? "" :
-//                            (testClassName.contains(".") ? testClassName.substring(testClassName.lastIndexOf('.') + 1) : testClassName);
+
                     boolean hasFail = false, hasSkip = false, hasPass = false;
                     NodeList elementsByTagName = testClassesElement.getElementsByTagName("test-method"); //get all METHODS in CLASSES
 
@@ -269,58 +217,48 @@ public class TestNGReportParser {
         featuresTableBuilder.append("</table>");
 
 
-        String passedBadgeHtml = "<a href=\"#feature-details-table\" title=\"Jump to details\" style=\"text-decoration:none;color:inherit;\">"
-                + "<span style=\"display:inline-block;font-size:20px;font-weight:700;color:#2d6a33;line-height:1;text-align:center;text-decoration:underline;\">"
-                + totalMethodsPassedCount + "</span></a>";
-        String failedBadgeHtml = "<a href=\"#feature-details-table\" title=\"Jump to details\" style=\"text-decoration:none;color:inherit;\">"
-                + "<span style=\"display:inline-block;font-size:20px;font-weight:700;color:#a94442;line-height:1;text-align:center;text-decoration:underline;\">"
-                + totalMethodsFailedCount + "</span></a>";
-        String skippedBadgeHtml = "<a href=\"#feature-details-table\" title=\"Jump to details\" style=\"text-decoration:none;color:inherit;\">"
-                + "<span style=\"display:inline-block;font-size:20px;font-weight:700;color:#7a5b18;line-height:1;text-align:center;text-decoration:underline;\">"
-                + totalMethodsSkippedCount + "</span></a>";
-        String totalBadgeHtml = "<a href=\"#feature-details-table\" title=\"Jump to details\" style=\"text-decoration:none;color:inherit;\">"
-                + "<span style=\"display:inline-block;font-size:20px;font-weight:700;color:#333;line-height:1;text-align:center;text-decoration:underline;\">"
-                + totalMethodsSize + "</span></a>";
-        summaryTable = summaryTable.replace("{methodsTotalCount}", totalBadgeHtml)
-                .replace("{passedBadge}", passedBadgeHtml)
-                .replace("{failedBadge}", failedBadgeHtml)
-                .replace("{skippedBadge}", skippedBadgeHtml);
+//        String passedBadgeHtml = "<a href=\"#feature-details-table\" title=\"Jump to details\" style=\"text-decoration:none;color:inherit;\">"
+//                + "<span style=\"display:inline-block;font-size:20px;font-weight:700;color:#2d6a33;line-height:1;text-align:center;text-decoration:underline;\">"
+//                + totalMethodsPassedCount + "</span></a>";
+//        String failedBadgeHtml = "<a href=\"#feature-details-table\" title=\"Jump to details\" style=\"text-decoration:none;color:inherit;\">"
+//                + "<span style=\"display:inline-block;font-size:20px;font-weight:700;color:#a94442;line-height:1;text-align:center;text-decoration:underline;\">"
+//                + totalMethodsFailedCount + "</span></a>";
+//        String skippedBadgeHtml = "<a href=\"#feature-details-table\" title=\"Jump to details\" style=\"text-decoration:none;color:inherit;\">"
+//                + "<span style=\"display:inline-block;font-size:20px;font-weight:700;color:#7a5b18;line-height:1;text-align:center;text-decoration:underline;\">"
+//                + totalMethodsSkippedCount + "</span></a>";
+//        String totalBadgeHtml = "<a href=\"#feature-details-table\" title=\"Jump to details\" style=\"text-decoration:none;color:inherit;\">"
+//                + "<span style=\"display:inline-block;font-size:20px;font-weight:700;color:#333;line-height:1;text-align:center;text-decoration:underline;\">"
+//                + totalMethodsSize + "</span></a>";
+
+        summaryTable = summaryTable.replace("{methodsTotalCount}", String.valueOf(totalMethodsSize))
+                .replace("{passedBadge}", String.valueOf(totalMethodsPassedCount))
+                .replace("{failedBadge}", String.valueOf(totalMethodsFailedCount))
+                .replace("{skippedBadge}", String.valueOf(totalMethodsSkippedCount));
+
         htmlBuilder.append("<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" role=\"presentation\">\n" +
                 "  <tr>\n" +
                 "    <td height=\"6\" style=\"font-size:12px;line-height:6px;mso-line-height-rule:exactly;\">&nbsp;</td>\n" +
                 "  </tr>\n" +
                 "</table>");//Line height before summary
-        htmlBuilder
-                .append("<div class='section' style=\"margin-top:6px;\">")
-                .append("<h2 style=\"font-family:Arial,Helvetica,sans-serif;font-size:18px;text-decoration:underline;color:#0b57a4;margin-top:0;\">Overall Summary</h2>")
-                .append("<div class='section-body'>")
-                .append(summaryTable);
 
-        System.out.println(totalMethodsFailedCount);
-        if(noteOnFailure!=null && !noteOnFailure.isBlank() && totalMethodsFailedCount > 0) {
+        htmlBuilder.append(summaryTable);
+
+
+
+
+//        if(noteOnFailure!=null && !noteOnFailure.isBlank() && totalMethodsFailedCount > 0) {
             htmlBuilder.append("<div style=\"font-family:Arial,sans-serif;border:1px solid #ffd89c;background:#fff7e6;color:#7a4b00;border-radius:10px;padding:4px 14px;margin-top:12px;font-size:15px;\"> <b>Note</b>: "+noteOnFailure+"</div>");
-        }
+//        }
         htmlBuilder.append("<img src='cid:pie' alt='pie'>");
 
         htmlBuilder.append(featuresTableBuilder);
         htmlBuilder.append("</div><br><img src='cid:bar' alt='bar'><br>")
-//                .append(featuresTableBuilder)
                 .append("<h2 style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;text-decoration:underline;color:#0b57a4;\">Feature-wise Scenario Execution Details</h2>")
                 .append("<hr style=\"border:none;border-bottom:1px solid #0b57a4;margin:2px 0;\">")
-                .append(scnHtmlBuilder)
-                .append("<a id=\"feature-details-last\" name=\"feature-details-last\"></a>")
-                .append("<div style=\"text-align:left;margin-top:8px;margin-bottom:16px;\">"
-                        + "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"display:inline-table;vertical-align:middle;border-collapse:separate;\">"
-                        + "<tr><td style=\"padding:0;\">"
-                        + "<a href=\"#reportDetails\" aria-label=\"Back to top\" title=\"Jump to top of the report\" style=\"display:inline-block;background:linear-gradient(180deg,#eaf4ff 0%,#f0f6ff 100%);color:#0b57a4;text-decoration:none;padding:6px 10px;border-radius:8px;font-weight:700;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1;border:1px solid #d6e9ff;box-shadow:none;\">"
-                        + "&#8679;&nbsp;Back to top"
-                        + "</a></td></tr></table>"
-                        + "</div>");
-        htmlBuilder.append("<br><br><footer style=\"font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#555;text-align:center;margin-top:20px;padding-top:10px;border-top:1px solid #ddd;\">")
-                .append("This report was generated automatically by the QE Team.<br>")
-                .append("&copy; ").append(new SimpleDateFormat("yyyy").format(new Date())).append(" QE Team. All rights reserved.")
-                .append("</footer>");
-//        htmlBuilder.append("</td></tr></table>");
+                .append(scnHtmlBuilder);
+        footer_backToAllTheWayTop(htmlBuilder);
+        setFooter(htmlBuilder);
+
         System.out.println("---------------------------");
         System.out.println(htmlBuilder);
         System.out.println("---------------------------");
@@ -382,42 +320,6 @@ public class TestNGReportParser {
                 };
             }
         };
-    }
-    /**
-     * Render a compact status "pill" for PASS / FAIL / SKIP (email-friendly inline styles).
-     */
-    private static String escapeHtml(String s) {
-        if (s == null) return "";
-        return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&#39;");
-    }
-
-    /**
-     * Render a compact status "pill" for PASS / FAIL / SKIP (email-friendly inline styles).
-     */
-    private static String statusPill1(String statusRaw) {
-        String status = (statusRaw == null) ? "UNKNOWN" : statusRaw.toUpperCase();
-        String bg = "#f2f2f2";
-        String color = "#333";
-//        String icon = "";
-
-        switch (status) {
-            case "PASS":
-                bg = "#e9f7ec"; color = "#1f7a3a";;
-                break;
-            case "FAIL":
-                bg = "#fdecea"; color = "#a94442"; ;
-                break;
-            case "SKIP":
-                bg = "#fff8e6"; color = "#a67b00";;
-                break;
-            default:
-                bg = "#eef2f5"; color = "#475569";
-        }
-
-        // pill style: rounded, bold, centered; min-width keeps uniform look
-        return "<span style=\"display:inline-block;padding:4px 10px;border-radius:999px;background:" + bg
-                + ";color:" + color + ";font-weight:700;font-size:12px;min-width:56px;text-align:center;line-height:1;\">"
-                + escapeHtml(status) + "</span>";
     }
 
     private static String statusPill(String statusRaw) {

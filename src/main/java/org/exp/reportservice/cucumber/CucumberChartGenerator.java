@@ -145,105 +145,7 @@ public class CucumberChartGenerator {
         return output;
     }
 
-    public static File createBarChart1(Map<String, Map<String, Integer>> data, String title, String path) throws IOException {
-        if (data == null || data.isEmpty()) {
-            throw new IllegalArgumentException("Data map cannot be null or empty.");
-        }
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        String[] statusOrder = {"Pass", "Fail", "Skip"};
-        for (String feature : data.keySet()) {
-            Map<String, Integer> statusMap = data.get(feature);
-            for (String status : statusOrder) {
-                Integer value = statusMap.getOrDefault(status, 0);
-                dataset.addValue(value, status, feature);
-            }
-        }
 
-        JFreeChart chart = ChartFactory.createBarChart(title, "Feature", "Scenarios", dataset);
-        chart.setBackgroundPaint(Color.WHITE); //enable this to set white/No background
-//        chart.setBackgroundPaint(new Color(245, 245, 245)); // light gray
-        chart.setBorderVisible(false);
-        chart.setAntiAlias(true);
-        chart.setTextAntiAlias(true);
-        chart.getLegend().setItemFont(new Font("SansSerif", Font.PLAIN, 12));
-        chart.getLegend().setPosition(RectangleEdge.BOTTOM);
-
-        CategoryPlot plot = (CategoryPlot) chart.getPlot();
-        plot.setBackgroundPaint(Color.WHITE);
-        plot.setOutlineVisible(false);        // Remove border
-        plot.setDomainGridlinePaint(Color.LIGHT_GRAY);
-        plot.setRangeGridlinePaint(Color.LIGHT_GRAY);
-
-        CategoryAxis domainAxis = plot.getDomainAxis();
-        domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
-        domainAxis.setLabelFont(new Font("SansSerif", Font.BOLD, 12));
-        domainAxis.setTickLabelFont(new Font("SansSerif", Font.PLAIN, 12));
-        domainAxis.setAxisLineStroke(new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
-        domainAxis.setTickMarkStroke(new BasicStroke(1.5f));
-        domainAxis.setTickMarksVisible(true);
-
-        NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
-        rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-        rangeAxis.setTickUnit(new NumberTickUnit(2));
-        rangeAxis.setLabelFont(new Font("SansSerif", Font.PLAIN, 12));
-        rangeAxis.setTickLabelFont(new Font("SansSerif", Font.PLAIN, 12));
-        rangeAxis.setAutoRange(true);
-        rangeAxis.setAxisLineStroke(new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
-        rangeAxis.setTickMarkStroke(new BasicStroke(1.5f));
-        rangeAxis.setTickMarksVisible(false);
-
-
-        BarRenderer renderer = (BarRenderer) plot.getRenderer();
-        renderer.setBarPainter(new StandardBarPainter());
-        renderer.setShadowVisible(true);
-        renderer.setShadowPaint(Color.LIGHT_GRAY);
-        renderer.setItemMargin(0.1);
-
-        renderer.setSeriesPaint(0, new Color(52, 168, 83));   // pass
-        renderer.setSeriesPaint(1, new Color(234, 67, 53));   // fail
-        renderer.setSeriesPaint(2, new Color(251, 188, 5));   // skip
-
-        renderer.setDefaultItemLabelGenerator(new StandardCategoryItemLabelGenerator());
-        renderer.setDefaultItemLabelsVisible(true);
-        renderer.setDefaultItemLabelFont(new Font("SansSerif", Font.PLAIN, 10));
-        renderer.setDefaultItemLabelPaint(Color.BLACK);
-        renderer.setDefaultPositiveItemLabelPosition(
-                new ItemLabelPosition(ItemLabelAnchor.OUTSIDE12, TextAnchor.BASELINE_CENTER)
-        );
-        plot.setRenderer(renderer);
-
-
-        int nonZeroSeries = 0;
-        for (int i = 0; i < 3; i++) {
-            boolean hasData = false;
-            for (int j = 0; j < dataset.getColumnCount(); j++) {
-                Number v = dataset.getValue(i, j);
-                if (v != null && v.intValue() > 0) {
-                    hasData = true;
-                    break;
-                }
-            }
-            if (hasData) nonZeroSeries++;
-        }
-// Make bar thinner if only one status is present
-//        if (nonZeroSeries < 4) {
-//            renderer.setMaximumBarWidth(0.05); // Thinner bar for single result
-//        } else {
-//            renderer.setMaximumBarWidth(0.15); // Default for multiple results
-//        }
-        renderer.setMaximumBarWidth(0.15);
-
-        File output = new File(path);
-        TextTitle chartTitle = chart.getTitle();
-        chartTitle.setFont(new Font("SansSerif", Font.BOLD, 14));
-
-        int minWidth = 600;
-        int widthPerFeature = 80;
-        int chartWidth = Math.max(minWidth, data.size() * widthPerFeature);
-
-        ChartUtils.saveChartAsPNG(output, chart, chartWidth, 450);
-        return output;
-    }
     public static File createPieChartForOverAllSummary(Map<String, Integer> data, String title, String path) throws IOException {
         if (data == null || data.isEmpty()) {
             throw new IllegalArgumentException("Data map cannot be null or empty.");
@@ -456,7 +358,7 @@ public class CucumberChartGenerator {
             if (hasData) nonZeroSeries++;
         }
 // Make bar thinner if only one status is present
-        if (nonZeroSeries == 1) {
+        if (nonZeroSeries < 4) {
             renderer.setMaximumBarWidth(0.05); // Thinner bar for single result
         } else {
             renderer.setMaximumBarWidth(0.15); // Default for multiple results
