@@ -26,7 +26,7 @@ public class ReportService {
             inner.put(scenarioResult.status, inner.getOrDefault(scenarioResult.status, 0) + 1);
         }
 
-        File barChartSummary = CucumberChartGenerator.createPieChartForOverAllSummary(statusCounts, "Overall Summary", "target/barchart1.png");
+        File barChartSummary = CucumberChartGenerator.createPieChartForOverAllSummary(statusCounts, "Overall Summary", "target/pieChart.png");
         File barChart = CucumberChartGenerator.createBarChart(featureMap, "Execution Status by Feature/Page", "target/barchart.png");
         EmailSender.send(mailTo, mailSubject, htmlResults, barChartSummary, barChart);
     }

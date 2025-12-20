@@ -15,7 +15,6 @@ public class EmailSender {
     private static final String MAIL_FROM = "AutoTest@experian.com";
     private static final String password = new String(Base64.getDecoder().decode("U2FwaWVudDk5MDgxOTUyMzg="));
     public static void send(String mailTo, String mailSubject, StringBuilder results, File pie, File bar) throws Exception {
-
         Properties props = new Properties();
         props.put("mail.smtp.host", MAIL_HOST_NAME);
         props.put("mail.smtp.auth", true);
@@ -44,15 +43,14 @@ public class EmailSender {
         // Pie image
         MimeBodyPart piePart = new MimeBodyPart();
         piePart.attachFile(pie);
-//        piePart.setContentID("<cid:bar_summary>");
-        piePart.setContentID("<pieChart>");
+        piePart.setContentID("<pie>");
         piePart.setDisposition(MimeBodyPart.INLINE);
         multipart.addBodyPart(piePart);
 
         // Bar image
         MimeBodyPart barPart = new MimeBodyPart();
         barPart.attachFile(bar);
-        barPart.setContentID("<barChart>");
+        barPart.setContentID("<bar>");
         barPart.setDisposition(MimeBodyPart.INLINE);
         multipart.addBodyPart(barPart);
 

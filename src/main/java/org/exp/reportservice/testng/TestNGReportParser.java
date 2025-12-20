@@ -13,11 +13,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.exp.reportservice.commons.CommonFunctions.overAllSummary;
+import static org.exp.reportservice.commons.CommonFunctions.statusPill;
 import static org.exp.reportservice.commons.HeaderAndFooter.*;
+import static org.exp.reportservice.constants.GlobalConstants.setHtmlBuilder;
 
 
 public class TestNGReportParser {
@@ -37,8 +40,9 @@ public class TestNGReportParser {
     public static StringBuilder parser(String noteOnFailure, String applicationName, Path testNgResultsXml) throws Exception {
         StringBuilder htmlBuilder = new StringBuilder();
 
+
         HeaderAndFooter.setHeader(htmlBuilder, applicationName);
-        String summaryTable = overAllSummary().toString();
+        String summaryTable = overAllSummary("Methods").toString();
 
         System.out.println(summaryTable);
 
@@ -178,9 +182,9 @@ public class TestNGReportParser {
                     String classStatus = hasFail ? "FAIL" : (hasSkip && !hasPass ? "SKIP" : "PASS");
 
                     // Prepend the header rows for test and class (only once per class)
-                    scnHtmlBuilder.append("<a id=\"feature-details-table\" name=\"feature-details-table\"></a>");
+                    scnHtmlBuilder.append("<a id=\"methods-details-table\" name=\"methods-details-table\"></a>");
                     scnHtmlBuilder.append("<tr id=\"abc\">");
-                    scnHtmlBuilder.append("<a id=\"feature_"+testName+"\" name=\"feature_"+testName+"\"></a>");
+                    scnHtmlBuilder.append("<a id=\"methods_"+testName+"\" name=\"fmethods_"+testName+"\"></a>");
                     scnHtmlBuilder.append("<td " + TD_STYLE + ">").append(firstRowForTest ? escapeHtml(testName) : "").append("</td>");
 
                     scnHtmlBuilder.append("<td " + TD_STYLE + "><div style=\"text-align:left;\">").append("&nbsp;").append("</div></td>");
@@ -217,19 +221,6 @@ public class TestNGReportParser {
         featuresTableBuilder.append("</table>");
 
 
-//        String passedBadgeHtml = "<a href=\"#feature-details-table\" title=\"Jump to details\" style=\"text-decoration:none;color:inherit;\">"
-//                + "<span style=\"display:inline-block;font-size:20px;font-weight:700;color:#2d6a33;line-height:1;text-align:center;text-decoration:underline;\">"
-//                + totalMethodsPassedCount + "</span></a>";
-//        String failedBadgeHtml = "<a href=\"#feature-details-table\" title=\"Jump to details\" style=\"text-decoration:none;color:inherit;\">"
-//                + "<span style=\"display:inline-block;font-size:20px;font-weight:700;color:#a94442;line-height:1;text-align:center;text-decoration:underline;\">"
-//                + totalMethodsFailedCount + "</span></a>";
-//        String skippedBadgeHtml = "<a href=\"#feature-details-table\" title=\"Jump to details\" style=\"text-decoration:none;color:inherit;\">"
-//                + "<span style=\"display:inline-block;font-size:20px;font-weight:700;color:#7a5b18;line-height:1;text-align:center;text-decoration:underline;\">"
-//                + totalMethodsSkippedCount + "</span></a>";
-//        String totalBadgeHtml = "<a href=\"#feature-details-table\" title=\"Jump to details\" style=\"text-decoration:none;color:inherit;\">"
-//                + "<span style=\"display:inline-block;font-size:20px;font-weight:700;color:#333;line-height:1;text-align:center;text-decoration:underline;\">"
-//                + totalMethodsSize + "</span></a>";
-
         summaryTable = summaryTable.replace("{methodsTotalCount}", String.valueOf(totalMethodsSize))
                 .replace("{passedBadge}", String.valueOf(totalMethodsPassedCount))
                 .replace("{failedBadge}", String.valueOf(totalMethodsFailedCount))
@@ -246,13 +237,13 @@ public class TestNGReportParser {
 
 
 
-//        if(noteOnFailure!=null && !noteOnFailure.isBlank() && totalMethodsFailedCount > 0) {
+        if(noteOnFailure!=null && !noteOnFailure.isBlank() && totalMethodsFailedCount > 0) {
             htmlBuilder.append("<div style=\"font-family:Arial,sans-serif;border:1px solid #ffd89c;background:#fff7e6;color:#7a4b00;border-radius:10px;padding:4px 14px;margin-top:12px;font-size:15px;\"> <b>Note</b>: "+noteOnFailure+"</div>");
-//        }
+        }
         htmlBuilder.append("<img src='cid:pie' alt='pie'>");
 
         htmlBuilder.append(featuresTableBuilder);
-        htmlBuilder.append("</div><br><img src='cid:bar' alt='bar'><br>")
+                                                                                                                                                                                                                                                                                                    htmlBuilder.append("</div><br><img src='cid:bar' alt='bar'><br>")
                 .append("<h2 style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;text-decoration:underline;color:#0b57a4;\">Feature-wise Scenario Execution Details</h2>")
                 .append("<hr style=\"border:none;border-bottom:1px solid #0b57a4;margin:2px 0;\">")
                 .append(scnHtmlBuilder);
@@ -261,6 +252,8 @@ public class TestNGReportParser {
 
         System.out.println("---------------------------");
         System.out.println(htmlBuilder);
+        setHtmlBuilder(new StringBuilder(htmlBuilder));
+        HTMLReportGeneration.htmlReportGenerator();
         System.out.println("---------------------------");
         return htmlBuilder;
     }
@@ -322,76 +315,49 @@ public class TestNGReportParser {
         };
     }
 
-    private static String statusPill(String statusRaw) {
-        return  statusPillCode(statusRaw, 0, 0);
-    }
-    private static String statusPill(String statusRaw, int fontSize, int fontWeight) {
-        return  statusPillCode(statusRaw, fontSize, fontWeight);
-    }
-
-    private static String statusPillCode_1(String statusRaw, int fontSize, int fontWeight){
-        int _fontSize = fontSize == 0 ? 13 : fontSize;
-        int _fontWeight = fontWeight == 0 ? 700 : fontWeight;
-        String status = (statusRaw == null) ? "UNKNOWN" : statusRaw.toUpperCase();
-        String bg = "#f2f2f2", color = "#333";
-        switch (status) {
-            case "PASS": bg = "#e9f7ec"; color = "#1f7a3a"; break;
-            case "FAIL": bg = "#fdecea"; color = "#d32f2f"; break;
-            case "SKIP": bg = "#fff8e6"; color = "#f9a825"; break;
-            default: bg = "#eef2f5"; color = "#475569";
-        }
-        return "<span style=\"display:inline-block;"
-                + "padding:8px 20px;"
-                + "border-radius:999px;"
-                + "background:" + bg + ";"
-                + "color:" + color + ";"
-                + "font-weight:"+fontWeight+";"
-                + "font-size:"+fontSize+"px;"
-                + "min-width:80px;"
-                + "text-align:center;"
-                + "line-height:1.2;"
-                + "font-family:Arial,Helvetica,sans-serif;"
-                + "box-shadow:0 2px 6px #e2e8f0;\">"
-                + escapeHtml(status) + "</span>";
-    }
-
-    private static String statusPillCode(String statusRaw, int fontSize, int fontWeight){
-        int _fontSize = fontSize == 0 ? 12 : fontSize;
-        int _fontWeight = fontWeight == 0 ? 700 : fontWeight;
-        String fontWeightCss = (_fontWeight >= 700) ? "bold" : String.valueOf(_fontWeight);
-
-        String status = (statusRaw == null) ? "UNKNOWN" : statusRaw.toUpperCase();
-        String bg = "#f2f2f2", color = "#333";
-        switch (status) {
-            case "PASS": bg = "#e9f7ec"; color = "#1f7a3a"; break;
-            case "FAIL": bg = "#fdecea"; color = "#d32f2f"; break;
-            case "SKIP": bg = "#fff8e6"; color = "#f9a825"; break;
-            default: bg = "#eef2f5"; color = "#475569";
-        }
-
-        // Outlook-friendly pill: use a single-cell table with bgcolor and inline padding.
-        StringBuilder pill = new StringBuilder();
-        pill.append("<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"display:inline-block;vertical-align:middle;border-collapse:separate;\">")
-                .append("<tr>")
-                .append("<td align=\"center\" valign=\"middle\" bgcolor=\"").append(bg).append("\"")
-                .append(" style=\"padding:6px 12px; background:").append(bg).append("; color:").append(color)
-                .append("; font-weight:").append("bold").append("; font-size:").append(_fontSize).append("px;")
-                .append("font-family:Arial,Helvetica,sans-serif; line-height:1; text-align:center;")
-                .append("border-radius:999px; -webkit-border-radius:999px; -moz-border-radius:999px;")
-                .append("mso-border-alt:0; mso-padding-alt:6px 12px;\">");
-
-        String content = escapeHtml(status);
-//        if (_fontWeight >= 700) {
-//            // ensure Outlook renders bold by using semantic tag
-//            content = "<strong style=\"font-weight:inherit;\">" + content + "</strong>";
+//    private static String statusPill(String statusRaw) {
+//        return  statusPillCode(statusRaw, 0, 0);
+//    }
+//    private static String statusPill(String statusRaw, int fontSize, int fontWeight) {
+//        return  statusPillCode(statusRaw, fontSize, fontWeight);
+//    }
+//
+//
+//    private static String statusPillCode(String statusRaw, int fontSize, int fontWeight){
+//        int _fontSize = fontSize == 0 ? 12 : fontSize;
+//
+//        String status = (statusRaw == null) ? "UNKNOWN" : statusRaw.toUpperCase();
+//        String bg = "#f2f2f2", color = "#333";
+//        switch (status) {
+//            case "PASS": bg = "#e9f7ec"; color = "#1f7a3a"; break;
+//            case "FAIL": bg = "#fdecea"; color = "#d32f2f"; break;
+//            case "SKIP": bg = "#fff8e6"; color = "#f9a825"; break;
+//            default: bg = "#eef2f5"; color = "#475569";
 //        }
-        content = "<strong style=\"font-weight:inherit;\">" + content + "</strong>";
-        pill.append(content)
-                .append("</td>")
-                .append("</tr>")
-                .append("</table>");
-
-        return pill.toString();
-    }
+//
+//        // Outlook-friendly pill: use a single-cell table with bgcolor and inline padding.
+//        StringBuilder pill = new StringBuilder();
+//        pill.append("<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"display:inline-block;vertical-align:middle;border-collapse:separate;\">")
+//                .append("<tr>")
+//                .append("<td align=\"center\" valign=\"middle\" bgcolor=\"").append(bg).append("\"")
+//                .append(" style=\"padding:6px 12px; background:").append(bg).append("; color:").append(color)
+//                .append("; font-weight:").append("bold").append("; font-size:").append(_fontSize).append("px;")
+//                .append("font-family:Arial,Helvetica,sans-serif; line-height:1; text-align:center;")
+//                .append("border-radius:999px; -webkit-border-radius:999px; -moz-border-radius:999px;")
+//                .append("mso-border-alt:0; mso-padding-alt:6px 12px;\">");
+//
+//        String content = escapeHtml(status);
+////        if (_fontWeight >= 700) {
+////            // ensure Outlook renders bold by using semantic tag
+////            content = "<strong style=\"font-weight:inherit;\">" + content + "</strong>";
+////        }
+//        content = "<strong style=\"font-weight:inherit;\">" + content + "</strong>";
+//        pill.append(content)
+//                .append("</td>")
+//                .append("</tr>")
+//                .append("</table>");
+//
+//        return pill.toString();
+//    }
 
 }

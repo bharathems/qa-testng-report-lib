@@ -2,6 +2,7 @@ package org.exp.reportservice.cucumber;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.exp.reportservice.commons.CommonFunctions;
+import org.exp.reportservice.commons.HTMLReportGeneration;
 import org.exp.reportservice.commons.HeaderAndFooter;
 
 import java.io.File;
@@ -10,7 +11,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.StreamSupport;
 
+import static org.exp.reportservice.commons.CommonFunctions.statusPill;
 import static org.exp.reportservice.commons.HeaderAndFooter.escapeHtml;
+import static org.exp.reportservice.constants.GlobalConstants.setHtmlBuilder;
 
 
 public class CucumberReportParser {
@@ -66,11 +69,10 @@ public class CucumberReportParser {
                     .sorted(Comparator.comparing(n -> n.path("name").asText("")))
                     .toList();
 
-            final String featureAnchor = "feature-" + slug(featureName);
-
 
             featureDetailsBlocks.append("<table id=\"feature-details\" " + TABLE_ATTR + " style=\"" + TABLE_STYLE + "margin-bottom:12px;\">")
-                .append("<caption " + CAPTION_STYLE + " align=\"left\">"
+                    .append("<a id=\"scn"+featureName+"\" name=\"scn"+featureName+"\"></a>")
+                    .append("<caption " + CAPTION_STYLE + " align=\"left\">"
                             + " <span style=\"color:#0b57a4;font-weight:700;font-family:Arial,Helvetica,sans-serif;\">FEATURE NAME - </span>" + escapeHtml(featureName) + "</caption>");
 
             featureDetailsBlocks.append("<tr><th " + TH_STYLE + ">S#</th><th " + TH_STYLE + ">Scenario</th><th " + TH_STYLE + ">Status</th></tr>");
@@ -86,11 +88,23 @@ public class CucumberReportParser {
                 String scenarioDesc = scenario.path("description").asText("NA");
                 String status = "Pass";
                 String pill = "<span class='pill ok'>Pass</span>";
+                String errorMessage = "";
                 boolean isScenarioPassed = getScenarioStatus(scenario);
                 System.out.println("Scenario '%s' after status: %s".formatted(scenarioName, isScenarioPassed));
                 if (!isScenarioPassed) {
                     status = "Fail";
                     pill = "<span class='pill err'>Fail</span>";
+                    // try to capture error message from 'after' nodes
+                    JsonNode afterNodes = scenario.get("after");
+                    if (afterNodes != null && afterNodes.isArray()) {
+                        for (JsonNode after : afterNodes) {
+                            String em = after.path("result").path("error_message").asText("");
+                            if (em != null && !em.isBlank()) {
+                                errorMessage = em;
+                                break;
+                            }
+                        }
+                    }
                     scenarioFailedCount++;
                     scenarioSize++;
                 }
@@ -105,6 +119,11 @@ public class CucumberReportParser {
                         if ("failed".equalsIgnoreCase(stepStatus)) {
                             status = "Fail";
                             pill = "<span class='pill err'>Fail</span>";
+                            // capture error message from failed step if available
+                            String em = step.path("result").path("error_message").asText("");
+                            if (em != null && !em.isBlank()) {
+                                errorMessage = em;
+                            }
                             scenarioFailedCount++;
                             scenarioSize++;
                             break;
@@ -126,9 +145,14 @@ public class CucumberReportParser {
                 if (scenarioDesc != null && !"NA".equalsIgnoreCase(scenarioDesc.trim())) {
                     featureDetailsBlocks.append("<div class='desc'>").append(scenarioDesc).append("</div>");
                 }
+                String color = status.equalsIgnoreCase("fail") ? "red" : "green";
+                // add title attribute only when there is an error message
+                String titleAttr = (errorMessage == null || errorMessage.isBlank()) ? "" : " title=\"" + escapeHtml(errorMessage) + "\"";
                 featureDetailsBlocks.append("</td>")
-                        .append("<td " + TD_STYLE +" >").append(pill).append("</td>")
+                        .append("<td " + TD_STYLE + titleAttr + " style=\"color: " + color + ";font-weight:bold;\"> " + statusPill(status) + " </td>")
                         .append("</tr>");
+
+
 
                 results.add(new ScenarioResult(featureName, scenarioId, scenarioName, scenarioDesc, status));
             }
@@ -140,9 +164,7 @@ public class CucumberReportParser {
             // replace the feature name append with this (inside the features loop)
             String safeFeatureName = escapeHtml(featureName.trim());
             featureSummaryRows.append("<tr>")
-                    .append("<td class='feat'  " + TD_STYLE + " >").append(safeFeatureName)
-                    .append("<a href='#").append(featureAnchor).append("' style=\"text-decoration:none;color:inherit;display:inline-block;max-width:360px;vertical-align:middle;word-break:break-word;white-space:normal;mso-line-height-rule:exactly;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;\">")
-                    .append("</a></td>")
+                    .append("<td " + TD_STYLE + "> <a href=\"#scn" + safeFeatureName + "\" style=\"text-decoration:underline;color:#223047;font-size:13px;line-height:1.2;font-weight:600;\">" + escapeHtml(safeFeatureName.toUpperCase()) + "</a></td>")
                     .append("<td  " + TD_STYLE + " ><span class='pill'>").append(scenarioSize).append("</span></td>")
                     .append("<td  " + TD_STYLE + " ><span class='pill ok'>").append(scenarioPassedCount).append("</span></td>")
                     .append("<td  " + TD_STYLE + " ><span class='pill err'>").append(scenarioFailedCount).append("</span></td>")
@@ -159,7 +181,7 @@ public class CucumberReportParser {
 
         html.append("<a id='top'></a>");
 
-        String overAllSummary = CommonFunctions.overAllSummary().toString()
+        String overAllSummary = CommonFunctions.overAllSummary("Scenarios").toString()
                 .replace("{methodsTotalCount}", String.valueOf(totalScenarioSize))
                 .replace("{passedBadge}", String.valueOf(totalScenarioPassedCount))
                 .replace("{failedBadge}", String.valueOf(totalScenarioFailedCount))
@@ -172,9 +194,10 @@ public class CucumberReportParser {
         }
 
         html.append("<div style='height:12px'></div>")
-                .append("<img src='cid:pieChart' alt='Overall Summary Chart'>")
+                .append("<img src='cid:pie' alt='Overall Summary Chart'>")
                 .append("</div></div>");
 
+        html.append("<a id=\"methods-details-table\" name=\"scenarios-details-table\"></a>");
         html.append("<div class='section'>")
                 .append("</br><h2 style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;text-decoration:underline;color:#0b57a4;\">Feature-wise Summary</h2>")
                 .append("<div class='section-body'>")
@@ -184,7 +207,7 @@ public class CucumberReportParser {
                 .append(featureSummaryRows)
                 .append("</tbody></table>")
                 .append("<div style='height:12px'></div>")
-                .append("<br><img src='cid:barChart' alt='Feature Summary Chart'><br>")
+                .append("<br><img src='cid:bar' alt='Feature Summary Chart'><br>")
                 .append("</div></div>");
 
         html.append("<div class='section' id='details'>")
@@ -196,6 +219,8 @@ public class CucumberReportParser {
 
 
         HeaderAndFooter.setFooter(html);
+        setHtmlBuilder(new StringBuilder(html));
+        HTMLReportGeneration.htmlReportGenerator();
         return html;
     }
 

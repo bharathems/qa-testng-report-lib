@@ -55,10 +55,10 @@ public class TestExecutionManager {
         }
     }
     public static void main(String[] args) {
-        emailTestReports("C3P",
-                "bharath.potlabhatni@experian.com",
-                "Production Sanity Execution Report",
-        null);
+//        emailTestReports("C3P",
+//                "bharath.potlabhatni@experian.com",
+//                "Production Sanity Execution Report",
+//        null);
         emailTestReportsWithNote(
                 "QE will perform post-validation failure analysis and circulate key findings.",
                 "C3P",
