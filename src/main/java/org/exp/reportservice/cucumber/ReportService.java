@@ -1,10 +1,13 @@
 package org.exp.reportservice.cucumber;
 
+import org.exp.reportservice.commons.EmailSender;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.exp.reportservice.commons.EmailSender.send;
 import static org.exp.reportservice.cucumber.CucumberReportParser.results;
 
 public class ReportService {
@@ -28,7 +31,7 @@ public class ReportService {
 
         File barChartSummary = CucumberChartGenerator.createPieChartForOverAllSummary(statusCounts, "Overall Summary", "target/pieChart.png");
         File barChart = CucumberChartGenerator.createBarChart(featureMap, "Execution Status by Feature/Page", "target/barchart.png");
-        EmailSender.send(mailTo, mailSubject, htmlResults, barChartSummary, barChart);
+        send(mailTo, mailSubject, htmlResults, barChartSummary, barChart);
     }
 
 

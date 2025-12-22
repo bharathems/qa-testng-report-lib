@@ -2,7 +2,6 @@
 package org.exp.reportservice.testng;
 
 import org.exp.reportservice.commons.*;
-import org.exp.reportservice.commons.HeaderAndFooter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -13,8 +12,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.exp.reportservice.commons.CommonFunctions.overAllSummary;
@@ -41,7 +38,7 @@ public class TestNGReportParser {
         StringBuilder htmlBuilder = new StringBuilder();
 
 
-        HeaderAndFooter.setHeader(htmlBuilder, applicationName);
+        setHeader(htmlBuilder, applicationName);
         String summaryTable = overAllSummary("Methods").toString();
 
         System.out.println(summaryTable);
@@ -133,6 +130,7 @@ public class TestNGReportParser {
                     StringBuilder classRowsBuilder = new StringBuilder();
                     // iterate methods and build method rows into the class buffer
                     for (Node testClassMethodName_nodes : nodeListIterable(elementsByTagName)) { //loop through METHODS in CLASSES
+                        String method_errorMessage = "";
 
                         if (testClassMethodName_nodes.getNodeType() != Node.ELEMENT_NODE) continue;
 
@@ -151,6 +149,9 @@ public class TestNGReportParser {
                             totalMethodsSize++;
                             methodsFailedCount++;
                             methodsSize++;
+
+                            method_errorMessage = readErrorMessage(testClassesMethodElement);
+
                         } else if (methodStatus.equalsIgnoreCase("pass")) {
                             hasPass = true;
                             totalMethodsPassedCount++;
@@ -164,14 +165,13 @@ public class TestNGReportParser {
                             methodsSkippedCount++;
                             methodsSize++;
                         }
-
                         // Build a full row for this method and append to class buffer
                         classRowsBuilder.append("<tr>");
                         classRowsBuilder.append("<td " + TD_STYLE + ">").append("").append("</td>");
 //                        classRowsBuilder.append("<td " + TD_STYLE + "><div style=\"text-align:center;\">").append("&nbsp;").append("</div></td>");
                         classRowsBuilder.append("<td " + TD_STYLE + " align=\"center\">").append("&nbsp;").append("</td>");
                         classRowsBuilder.append("<td " + TD_STYLE + ">").append(escapeHtml(testMethodName)).append("</td>");
-                        classRowsBuilder.append("<td " + TD_STYLE + ">").append(statusPill(methodStatus, 10, 1200)).append("</td>");
+                        classRowsBuilder.append("<td " + TD_STYLE + method_errorMessage + ">").append(statusPill(methodStatus, 10, 1200)).append("</td>");
                         classRowsBuilder.append("<td " + TD_STYLE + ">").append("").append("</td>");
                         classRowsBuilder.append("</tr>");
 
@@ -183,8 +183,9 @@ public class TestNGReportParser {
 
                     // Prepend the header rows for test and class (only once per class)
                     scnHtmlBuilder.append("<a id=\"methods-details-table\" name=\"methods-details-table\"></a>");
-                    scnHtmlBuilder.append("<tr id=\"abc\">");
-                    scnHtmlBuilder.append("<a id=\"methods_"+testName+"\" name=\"fmethods_"+testName+"\"></a>");
+                    scnHtmlBuilder.append("<tr id=\"feature_"+testName+"  name = \"feature_"+testName+" \">");
+                    scnHtmlBuilder.append("<a id=\"feature_"+testName+"\" name=\"feature_"+testName+"\"></a>");
+
                     scnHtmlBuilder.append("<td " + TD_STYLE + ">").append(firstRowForTest ? escapeHtml(testName) : "").append("</td>");
 
                     scnHtmlBuilder.append("<td " + TD_STYLE + "><div style=\"text-align:left;\">").append("&nbsp;").append("</div></td>");
@@ -258,32 +259,6 @@ public class TestNGReportParser {
         return htmlBuilder;
     }
 
-    public static void printAsTable(List<TestNGResult> results) {
-        if (results == null || results.isEmpty()) {
-            System.out.println("No test-method entries found.");
-            return;
-        }
-
-        // simple column widths
-        int wSuite = Math.max("Suite name".length(), results.stream().mapToInt(r -> r.suiteName.length()).max().orElse(6));
-        int wTest = Math.max("Test name".length(), results.stream().mapToInt(r -> r.testName.length()).max().orElse(6));
-        int wClass = Math.max("Method name".length(), results.stream().mapToInt(r -> (r.className).length()).max().orElse(6));
-        int wMethod = Math.max("Method name".length(), results.stream().mapToInt(r -> (r.testMethodName).length()).max().orElse(6));
-        int wClassMethod = Math.max("Method name".length(), results.stream().mapToInt(r -> (r.className + "#" + r.testMethodName).length()).max().orElse(6));
-        int wStatus = Math.max("Status".length(), results.stream().mapToInt(r -> r.methodStatus.length()).max().orElse(6));
-        int wTime = Math.max("Time (ms)".length(), results.stream().mapToInt(r -> r.durationMs.length()).max().orElse(8));
-
-        String fmt = "%-" + wSuite + "s | %-" + wTest + "s | %-" + wClass + "s | %-" + wStatus + "s | %" + wTime + "s%n";
-
-        System.out.printf(fmt, "Suite Name", "Test name", "Class name", "Method name", "Status", "Time (ms)");
-        System.out.println(String.join("", Collections.nCopies(wTest + wClass + wStatus + wTime + 9, "-")));
-
-        for (TestNGResult r : results) {
-            String methodName = (r.className == null || r.className.isEmpty()) ? r.testMethodName : r.className;
-            System.out.printf(fmt, r.suiteName, r.testName, methodName, r.methodStatus, r.durationMs);
-        }
-    }
-
     static String getTestMethodStatus(Element testElement) {
         NodeList testMethods = testElement.getElementsByTagName("test-method");
         String methodStatus = "PASS";
@@ -315,49 +290,31 @@ public class TestNGReportParser {
         };
     }
 
-//    private static String statusPill(String statusRaw) {
-//        return  statusPillCode(statusRaw, 0, 0);
-//    }
-//    private static String statusPill(String statusRaw, int fontSize, int fontWeight) {
-//        return  statusPillCode(statusRaw, fontSize, fontWeight);
-//    }
-//
-//
-//    private static String statusPillCode(String statusRaw, int fontSize, int fontWeight){
-//        int _fontSize = fontSize == 0 ? 12 : fontSize;
-//
-//        String status = (statusRaw == null) ? "UNKNOWN" : statusRaw.toUpperCase();
-//        String bg = "#f2f2f2", color = "#333";
-//        switch (status) {
-//            case "PASS": bg = "#e9f7ec"; color = "#1f7a3a"; break;
-//            case "FAIL": bg = "#fdecea"; color = "#d32f2f"; break;
-//            case "SKIP": bg = "#fff8e6"; color = "#f9a825"; break;
-//            default: bg = "#eef2f5"; color = "#475569";
-//        }
-//
-//        // Outlook-friendly pill: use a single-cell table with bgcolor and inline padding.
-//        StringBuilder pill = new StringBuilder();
-//        pill.append("<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"display:inline-block;vertical-align:middle;border-collapse:separate;\">")
-//                .append("<tr>")
-//                .append("<td align=\"center\" valign=\"middle\" bgcolor=\"").append(bg).append("\"")
-//                .append(" style=\"padding:6px 12px; background:").append(bg).append("; color:").append(color)
-//                .append("; font-weight:").append("bold").append("; font-size:").append(_fontSize).append("px;")
-//                .append("font-family:Arial,Helvetica,sans-serif; line-height:1; text-align:center;")
-//                .append("border-radius:999px; -webkit-border-radius:999px; -moz-border-radius:999px;")
-//                .append("mso-border-alt:0; mso-padding-alt:6px 12px;\">");
-//
-//        String content = escapeHtml(status);
-////        if (_fontWeight >= 700) {
-////            // ensure Outlook renders bold by using semantic tag
-////            content = "<strong style=\"font-weight:inherit;\">" + content + "</strong>";
-////        }
-//        content = "<strong style=\"font-weight:inherit;\">" + content + "</strong>";
-//        pill.append(content)
-//                .append("</td>")
-//                .append("</tr>")
-//                .append("</table>");
-//
-//        return pill.toString();
-//    }
+    private static String readErrorMessage(Element testClassesMethodElement) {
+        String method_errorMessage = "";
+        NodeList exceptionNodes = testClassesMethodElement.getElementsByTagName("exception");
+        if (exceptionNodes.getLength() > 0) {
+            Element ex = (Element) exceptionNodes.item(0);
+            NodeList fullStack = ex.getElementsByTagName("full-stacktrace");
+            if (fullStack.getLength() > 0) {
+                method_errorMessage = fullStack.item(0).getTextContent();
+            } else {
+                NodeList msg = ex.getElementsByTagName("message");
+                if (msg.getLength() > 0) {
+                    method_errorMessage = msg.item(0).getTextContent();
+                } else {
+                    method_errorMessage = ex.getTextContent();
+                }
+            }
+            if (method_errorMessage != null) method_errorMessage = method_errorMessage.trim();
+        }
 
+        String safeError = escapeHtml(method_errorMessage == null ? "" : method_errorMessage)
+                .replace("\r\n", "\n")
+                .replace("\r", "\n")
+                .replace("\n", "&#10;")   // preserve line breaks in HTML title
+                .replace("'", "&#39;")
+                .replace("\"", "&quot;");
+        return safeError.isEmpty() ? "" : " title='" + safeError + "'";
+    }
 }

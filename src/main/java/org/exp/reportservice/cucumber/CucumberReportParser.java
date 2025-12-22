@@ -147,9 +147,10 @@ public class CucumberReportParser {
                 }
                 String color = status.equalsIgnoreCase("fail") ? "red" : "green";
                 // add title attribute only when there is an error message
-                String titleAttr = (errorMessage == null || errorMessage.isBlank()) ? "" : " title=\"" + escapeHtml(errorMessage) + "\"";
+                String titleAttr = " title='"+errorMessage+"'";//set elements[1].steps[2].result.status tool tip when its failed
                 featureDetailsBlocks.append("</td>")
                         .append("<td " + TD_STYLE + titleAttr + " style=\"color: " + color + ";font-weight:bold;\"> " + statusPill(status) + " </td>")
+//                        .append("<td " + TD_STYLE + titleAttr + " style=\"color: " + color + ";font-weight:bold;\"> " + statusPill(status) + " </td>")
                         .append("</tr>");
 
 

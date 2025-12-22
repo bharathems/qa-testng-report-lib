@@ -1,4 +1,4 @@
-package org.exp.reportservice.cucumber;
+package org.exp.reportservice.commons;
 
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
@@ -7,6 +7,8 @@ import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.Properties;
 
@@ -53,6 +55,14 @@ public class EmailSender {
         barPart.setContentID("<bar>");
         barPart.setDisposition(MimeBodyPart.INLINE);
         multipart.addBodyPart(barPart);
+        File reportPDF = Paths.get("target").resolve("report.pdf").toFile();
+        if (reportPDF.exists()) {
+            MimeBodyPart pdfPart = new MimeBodyPart();
+            pdfPart.attachFile(reportPDF);
+            pdfPart.setFileName(reportPDF.getName());
+            pdfPart.setDisposition(MimeBodyPart.ATTACHMENT);
+            multipart.addBodyPart(pdfPart);
+        }
 
         message.setContent(multipart);
         Transport.send(message);

@@ -1,5 +1,7 @@
 package org.exp.reportservice.testng;
 
+import org.exp.reportservice.commons.EmailSender;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -49,7 +51,8 @@ public class TestExecutionManager {
             }
             File pieChart = createPieChart(statusCounts, "Overall Summary", "target/piechart.png");
             File barChart = createBarChart(featureMap, "Execution Status by Methods", "target/barchart.png");
-            TestReportMailer.emailTestReport(mailTo, emailSubject, htmlResults, pieChart, barChart);
+//            TestReportMailer.emailTestReport(mailTo, emailSubject, htmlResults, pieChart, barChart);
+            EmailSender.send(mailTo, emailSubject, htmlResults, pieChart, barChart);
         } catch (Exception e) {
             e.printStackTrace();
         }

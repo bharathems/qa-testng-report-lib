@@ -1,12 +1,15 @@
 package org.exp.reportservice.commons;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
+import static org.exp.reportservice.commons.HtmlToPdfConverter.convert;
 import static org.exp.reportservice.constants.GlobalConstants.getHtmlBuilder;
 
 public class HTMLReportGeneration {
@@ -86,5 +89,16 @@ public class HTMLReportGeneration {
             throw new RuntimeException(e);
         }
         System.out.println("Saved report to " + reportHtml.toAbsolutePath());
+
+       try {
+           Path reportPDF = targetDir.resolve("report.pdf");
+           Objects.requireNonNull(reportHtml, "htmlFile must not be null");
+           Objects.requireNonNull(reportPDF, "pdfFile must not be null");
+           convert(reportHtml, reportPDF);
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+
+
     }
 }
