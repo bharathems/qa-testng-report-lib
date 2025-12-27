@@ -1,6 +1,10 @@
-package org.exp.reportservice.cucumber;
+package org.exp.reportservice.testrunners;
 
-import org.exp.reportservice.commons.EmailSender;
+
+import org.exp.reportservice.cucumber.CucumberChartGenerator;
+import org.exp.reportservice.cucumber.CucumberReportParser;
+import org.exp.reportservice.cucumber.ScenarioResult;
+import org.exp.reportservice.cucumber.TargetFileFinder;
 
 import java.io.File;
 import java.util.HashMap;
@@ -10,14 +14,40 @@ import java.util.Optional;
 import static org.exp.reportservice.commons.EmailSender.send;
 import static org.exp.reportservice.cucumber.CucumberReportParser.results;
 
-public class ReportService {
+public class CucumberEmailReportService {
+
+    public static void main(String[] args) {
+        try {
+            // Manually trigger the report merging
+//            mergeCucumberJsonReports(); //Optional
+//            CucumberEmailReportService.sendReportsInEmail("QE will perform post-validation failure analysis and circulate key findings within 45 minutes to all stakeholders." ,
+//                    "APP Name",
+//                    "cucumber-json-report.json",
+//                    "bharath.potlabhatni@experian.com",
+//                    "PRODUCTION Sanity Execution Report ");
+            CucumberEmailReportService.sendReportsInEmail(
+                    "APP Name",
+                    "cucumber-json-report.json",
+                    "bharath.potlabhatni@experian.com",
+                    "PRODUCTION Sanity Execution Report ");
+
+
+        } catch (Exception e) {
+            System.err.println("Error during report processing: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     public static void sendCucumberReportsInEmail(String noteOnFailures, String applicationName, String reportJsonFileName, String mailTo, String mailSubject) throws Exception{
         Map<String, Integer> statusCounts = new HashMap<>();
         Map<String, Map<String, Integer>> featureMap = new HashMap<>();
         Optional<File> jsonReportOptional = TargetFileFinder.findInTarget(reportJsonFileName);
-        File jsonReportPath = jsonReportOptional.orElseThrow(() ->
-                new IllegalStateException("`" + reportJsonFileName + "` not found under `target`"));
+
+        File jsonReportPath = jsonReportOptional.orElseThrow(() -> new IllegalStateException(
+                "Cucumber report `" + reportJsonFileName + "` not found." +
+                        " Provide an absolute path to the report, place the report on the classpath/resources, or ensure the report file is available under `target` in the consuming project."));
+
+
         String reportPath = jsonReportPath.getPath();
         File jsonReport = new File(reportPath);
 

@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class ChartGenerator {
+public class ChartGenerator {
 
     public static File createPieChart(Map<String, Integer> data, String title, String path) throws IOException {
         if (data == null || data.isEmpty()) {

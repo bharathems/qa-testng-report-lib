@@ -67,8 +67,8 @@ public final class HtmlToPdfConverter {
             throw new RuntimeException(e);
         }
         Path reportHtml = targetDir.resolve("report.html");
-        Path reportPDF = targetDir.resolve("report.pdf");
-
+        String date = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.BASIC_ISO_DATE);
+        Path reportPDF = targetDir.resolve("report-" + date + ".pdf");
         convert(reportHtml, reportPDF);
     }
 }

@@ -1,0 +1,837 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results ignored="6" total="19" passed="3" failed="10" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2025-12-19T21:56:11 IST" name="C3P API Regression Suite" finished-at="2025-12-19T22:23:59 IST" duration-ms="1668126">
+    <groups>
+    </groups>
+    <test started-at="2025-12-19T21:56:11 IST" name="001 C3P API Report/Corrections" finished-at="2025-12-19T22:07:20 IST" duration-ms="668862">
+      <class name="org.c3p.automation.api.steps.corrections.APITestCorrectionSteps">
+        <test-method is-config="true" signature="beforeMethod(java.lang.reflect.Method, java.lang.String)[pri:0, instance:org.c3p.automation.api.steps.corrections.APITestCorrectionSteps@7c37508a]" started-at="2025-12-19T21:59:29 IST" name="beforeMethod" finished-at="2025-12-19T21:59:29 IST" duration-ms="44" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.corrections.APITestCorrectionSteps.API_create_correction_case()]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[userData_TADE]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method signature="API_create_correction_case()[pri:1, instance:org.c3p.automation.api.steps.corrections.APITestCorrectionSteps@7c37508a]" started-at="2025-12-19T21:59:29 IST" name="API_create_correction_case" finished-at="2025-12-19T22:02:58 IST" duration-ms="209093" status="FAIL">
+          <exception class="java.lang.AssertionError">
+            <message>
+              <![CDATA[Failed while hitting open BU endpoint - com.jayway.jsonpath.PathNotFoundException: No results for path: $['openRequest'][0]['request']['businessUnit']['CIS']]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[java.lang.AssertionError: Failed while hitting open BU endpoint - com.jayway.jsonpath.PathNotFoundException: No results for path: $['openRequest'][0]['request']['businessUnit']['CIS']
+at org.junit.Assert.fail(Assert.java:93)
+at org.junit.Assert.assertTrue(Assert.java:43)
+at org.c3p.automation.api.commons.commonfunctions.CommonFunctionsAPI.validateOpenBURequest(CommonFunctionsAPI.java:1860)
+at org.c3p.automation.api.steps.corrections.APITestCorrectionSteps.API_create_correction_case(APITestCorrectionSteps.java:36)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:134)
+at org.testng.internal.TestInvoker.invokeMethod(TestInvoker.java:597)
+at org.testng.internal.TestInvoker.invokeTestMethod(TestInvoker.java:173)
+at org.testng.internal.MethodRunner.runInSequence(MethodRunner.java:46)
+at org.testng.internal.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:816)
+at org.testng.internal.TestInvoker.invokeTestMethods(TestInvoker.java:146)
+at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:766)
+at org.testng.TestRunner.run(TestRunner.java:587)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:384)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:378)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:337)
+at org.testng.SuiteRunner.run(SuiteRunner.java:286)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:96)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1187)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1109)
+at org.testng.TestNG.runSuites(TestNG.java:1039)
+at org.testng.TestNG.run(TestNG.java:1007)
+at org.c3p.automation.framework.runner.RegressionTestRunner.main(RegressionTestRunner.java:51)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.lang.AssertionError -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- API_create_correction_case -->
+        <test-method is-config="true" signature="tearDownTest(java.lang.reflect.Method)[pri:0, instance:org.c3p.automation.api.steps.corrections.APITestCorrectionSteps@7c37508a]" started-at="2025-12-19T22:02:58 IST" name="tearDownTest" finished-at="2025-12-19T22:02:58 IST" duration-ms="3" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.corrections.APITestCorrectionSteps.API_create_correction_case()]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDownTest -->
+      </class> <!-- org.c3p.automation.api.steps.corrections.APITestCorrectionSteps -->
+      <class name="org.c3p.automation.api.steps.optout.APITestOptoutSteps">
+        <test-method is-config="true" signature="beforeMethod(java.lang.reflect.Method, java.lang.String)[pri:0, instance:org.c3p.automation.api.steps.optout.APITestOptoutSteps@247310d0]" started-at="2025-12-19T22:02:58 IST" name="beforeMethod" finished-at="2025-12-19T22:02:58 IST" duration-ms="57" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.optout.APITestOptoutSteps.create_optout_sales_case()]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[userData_TADE]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method signature="create_optout_sales_case()[pri:0, instance:org.c3p.automation.api.steps.optout.APITestOptoutSteps@247310d0]" started-at="2025-12-19T22:02:58 IST" name="create_optout_sales_case" finished-at="2025-12-19T22:03:12 IST" duration-ms="13992" status="FAIL">
+          <exception class="java.lang.AssertionError">
+            <message>
+              <![CDATA[Failed while hitting open BU endpoint - com.jayway.jsonpath.PathNotFoundException: No results for path: $['openRequest'][0]['request']['businessUnit']['CIS']]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[java.lang.AssertionError: Failed while hitting open BU endpoint - com.jayway.jsonpath.PathNotFoundException: No results for path: $['openRequest'][0]['request']['businessUnit']['CIS']
+at org.junit.Assert.fail(Assert.java:93)
+at org.junit.Assert.assertTrue(Assert.java:43)
+at org.c3p.automation.api.commons.commonfunctions.CommonFunctionsAPI.validateOpenBURequest(CommonFunctionsAPI.java:1860)
+at org.c3p.automation.api.steps.optout.APITestOptoutSteps.create_optout_sales_case(APITestOptoutSteps.java:37)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:134)
+at org.testng.internal.TestInvoker.invokeMethod(TestInvoker.java:597)
+at org.testng.internal.TestInvoker.invokeTestMethod(TestInvoker.java:173)
+at org.testng.internal.MethodRunner.runInSequence(MethodRunner.java:46)
+at org.testng.internal.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:816)
+at org.testng.internal.TestInvoker.invokeTestMethods(TestInvoker.java:146)
+at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:766)
+at org.testng.TestRunner.run(TestRunner.java:587)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:384)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:378)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:337)
+at org.testng.SuiteRunner.run(SuiteRunner.java:286)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:96)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1187)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1109)
+at org.testng.TestNG.runSuites(TestNG.java:1039)
+at org.testng.TestNG.run(TestNG.java:1007)
+at org.c3p.automation.framework.runner.RegressionTestRunner.main(RegressionTestRunner.java:51)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.lang.AssertionError -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- create_optout_sales_case -->
+        <test-method is-config="true" signature="tearDownTest(java.lang.reflect.Method)[pri:0, instance:org.c3p.automation.api.steps.optout.APITestOptoutSteps@247310d0]" started-at="2025-12-19T22:03:12 IST" name="tearDownTest" finished-at="2025-12-19T22:03:12 IST" duration-ms="2" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.optout.APITestOptoutSteps.create_optout_sales_case()]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDownTest -->
+        <test-method is-config="true" signature="beforeMethod(java.lang.reflect.Method, java.lang.String)[pri:0, instance:org.c3p.automation.api.steps.optout.APITestOptoutSteps@247310d0]" started-at="2025-12-19T22:03:12 IST" name="beforeMethod" finished-at="2025-12-19T22:03:13 IST" duration-ms="54" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.optout.APITestOptoutSteps.create_optout_sensitiveData_case()]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[userData_TADE]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method signature="create_optout_sensitiveData_case()[pri:1, instance:org.c3p.automation.api.steps.optout.APITestOptoutSteps@247310d0]" started-at="2025-12-19T22:03:13 IST" name="create_optout_sensitiveData_case" finished-at="2025-12-19T22:03:22 IST" duration-ms="9961" status="FAIL">
+          <exception class="java.lang.AssertionError">
+            <message>
+              <![CDATA[Salesforce case is not correct ]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[java.lang.AssertionError: Salesforce case is not correct
+at org.junit.Assert.fail(Assert.java:93)
+at org.junit.Assert.assertTrue(Assert.java:43)
+at org.c3p.automation.framework.utils.GlobalFunctionsAPIWEB.verifyCaseDetails(GlobalFunctionsAPIWEB.java:587)
+at org.c3p.automation.framework.utils.GlobalFunctionsAPIWEB.validatePrivacyRequestTableData_PR(GlobalFunctionsAPIWEB.java:500)
+at org.c3p.automation.api.actions.login.C3PAPILogin.APIAuthentication(C3PAPILogin.java:189)
+at org.c3p.automation.api.actions.login.C3PAPILogin.executeAuthentication(C3PAPILogin.java:294)
+at org.c3p.automation.api.actions.login.C3PAPILogin.apiAuthScript(C3PAPILogin.java:303)
+at org.c3p.automation.api.steps.optout.APITestOptoutSteps.create_optout_sensitiveData_case(APITestOptoutSteps.java:49)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:134)
+at org.testng.internal.TestInvoker.invokeMethod(TestInvoker.java:597)
+at org.testng.internal.TestInvoker.invokeTestMethod(TestInvoker.java:173)
+at org.testng.internal.MethodRunner.runInSequence(MethodRunner.java:46)
+at org.testng.internal.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:816)
+at org.testng.internal.TestInvoker.invokeTestMethods(TestInvoker.java:146)
+at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:766)
+at org.testng.TestRunner.run(TestRunner.java:587)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:384)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:378)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:337)
+at org.testng.SuiteRunner.run(SuiteRunner.java:286)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:96)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1187)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1109)
+at org.testng.TestNG.runSuites(TestNG.java:1039)
+at org.testng.TestNG.run(TestNG.java:1007)
+at org.c3p.automation.framework.runner.RegressionTestRunner.main(RegressionTestRunner.java:51)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.lang.AssertionError -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- create_optout_sensitiveData_case -->
+        <test-method is-config="true" signature="tearDownTest(java.lang.reflect.Method)[pri:0, instance:org.c3p.automation.api.steps.optout.APITestOptoutSteps@247310d0]" started-at="2025-12-19T22:03:22 IST" name="tearDownTest" finished-at="2025-12-19T22:03:22 IST" duration-ms="2" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.optout.APITestOptoutSteps.create_optout_sensitiveData_case()]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDownTest -->
+        <test-method is-config="true" signature="beforeMethod(java.lang.reflect.Method, java.lang.String)[pri:0, instance:org.c3p.automation.api.steps.optout.APITestOptoutSteps@247310d0]" started-at="2025-12-19T22:03:22 IST" name="beforeMethod" finished-at="2025-12-19T22:03:23 IST" duration-ms="49" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.optout.APITestOptoutSteps.create_optout_processing_case()]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[userData_TADE]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method signature="create_optout_processing_case()[pri:2, instance:org.c3p.automation.api.steps.optout.APITestOptoutSteps@247310d0]" started-at="2025-12-19T22:03:23 IST" name="create_optout_processing_case" finished-at="2025-12-19T22:03:36 IST" duration-ms="13156" status="FAIL">
+          <exception class="java.lang.AssertionError">
+            <message>
+              <![CDATA[Failed while hitting open BU endpoint - com.jayway.jsonpath.PathNotFoundException: No results for path: $['openRequest'][0]['request']['businessUnit']['CIS']]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[java.lang.AssertionError: Failed while hitting open BU endpoint - com.jayway.jsonpath.PathNotFoundException: No results for path: $['openRequest'][0]['request']['businessUnit']['CIS']
+at org.junit.Assert.fail(Assert.java:93)
+at org.junit.Assert.assertTrue(Assert.java:43)
+at org.c3p.automation.api.commons.commonfunctions.CommonFunctionsAPI.validateOpenBURequest(CommonFunctionsAPI.java:1860)
+at org.c3p.automation.api.steps.optout.APITestOptoutSteps.create_optout_processing_case(APITestOptoutSteps.java:63)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:134)
+at org.testng.internal.TestInvoker.invokeMethod(TestInvoker.java:597)
+at org.testng.internal.TestInvoker.invokeTestMethod(TestInvoker.java:173)
+at org.testng.internal.MethodRunner.runInSequence(MethodRunner.java:46)
+at org.testng.internal.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:816)
+at org.testng.internal.TestInvoker.invokeTestMethods(TestInvoker.java:146)
+at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:766)
+at org.testng.TestRunner.run(TestRunner.java:587)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:384)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:378)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:337)
+at org.testng.SuiteRunner.run(SuiteRunner.java:286)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:96)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1187)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1109)
+at org.testng.TestNG.runSuites(TestNG.java:1039)
+at org.testng.TestNG.run(TestNG.java:1007)
+at org.c3p.automation.framework.runner.RegressionTestRunner.main(RegressionTestRunner.java:51)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.lang.AssertionError -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- create_optout_processing_case -->
+        <test-method is-config="true" signature="tearDownTest(java.lang.reflect.Method)[pri:0, instance:org.c3p.automation.api.steps.optout.APITestOptoutSteps@247310d0]" started-at="2025-12-19T22:03:36 IST" name="tearDownTest" finished-at="2025-12-19T22:03:36 IST" duration-ms="3" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.optout.APITestOptoutSteps.create_optout_processing_case()]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDownTest -->
+        <test-method is-config="true" signature="beforeMethod(java.lang.reflect.Method, java.lang.String)[pri:0, instance:org.c3p.automation.api.steps.optout.APITestOptoutSteps@247310d0]" started-at="2025-12-19T22:03:36 IST" name="beforeMethod" finished-at="2025-12-19T22:03:36 IST" duration-ms="52" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.optout.APITestOptoutSteps.create_optout_all_case()]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[userData_TADE]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method signature="create_optout_all_case()[pri:3, instance:org.c3p.automation.api.steps.optout.APITestOptoutSteps@247310d0]" started-at="2025-12-19T22:03:36 IST" name="create_optout_all_case" finished-at="2025-12-19T22:05:23 IST" duration-ms="107563" status="FAIL">
+          <exception class="java.lang.AssertionError">
+            <message>
+              <![CDATA[Failed while hitting open BU endpoint - com.jayway.jsonpath.PathNotFoundException: No results for path: $['openRequest'][0]['request']['businessUnit']['CIS']]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[java.lang.AssertionError: Failed while hitting open BU endpoint - com.jayway.jsonpath.PathNotFoundException: No results for path: $['openRequest'][0]['request']['businessUnit']['CIS']
+at org.junit.Assert.fail(Assert.java:93)
+at org.junit.Assert.assertTrue(Assert.java:43)
+at org.c3p.automation.api.commons.commonfunctions.CommonFunctionsAPI.validateOpenBURequest(CommonFunctionsAPI.java:1860)
+at org.c3p.automation.api.steps.optout.APITestOptoutSteps.create_optout_all_case(APITestOptoutSteps.java:78)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:134)
+at org.testng.internal.TestInvoker.invokeMethod(TestInvoker.java:597)
+at org.testng.internal.TestInvoker.invokeTestMethod(TestInvoker.java:173)
+at org.testng.internal.MethodRunner.runInSequence(MethodRunner.java:46)
+at org.testng.internal.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:816)
+at org.testng.internal.TestInvoker.invokeTestMethods(TestInvoker.java:146)
+at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:766)
+at org.testng.TestRunner.run(TestRunner.java:587)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:384)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:378)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:337)
+at org.testng.SuiteRunner.run(SuiteRunner.java:286)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:96)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1187)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1109)
+at org.testng.TestNG.runSuites(TestNG.java:1039)
+at org.testng.TestNG.run(TestNG.java:1007)
+at org.c3p.automation.framework.runner.RegressionTestRunner.main(RegressionTestRunner.java:51)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.lang.AssertionError -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- create_optout_all_case -->
+        <test-method is-config="true" signature="tearDownTest(java.lang.reflect.Method)[pri:0, instance:org.c3p.automation.api.steps.optout.APITestOptoutSteps@247310d0]" started-at="2025-12-19T22:05:23 IST" name="tearDownTest" finished-at="2025-12-19T22:05:23 IST" duration-ms="3" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.optout.APITestOptoutSteps.create_optout_all_case()]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDownTest -->
+      </class> <!-- org.c3p.automation.api.steps.optout.APITestOptoutSteps -->
+      <class name="org.c3p.automation.api.steps.report.APITestReportSteps">
+        <test-method is-config="true" signature="beforeMethod(java.lang.reflect.Method, java.lang.String)[pri:0, instance:org.c3p.automation.api.steps.report.APITestReportSteps@3e08ff24]" started-at="2025-12-19T21:56:11 IST" name="beforeMethod" finished-at="2025-12-19T21:56:12 IST" duration-ms="597" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.report.APITestReportSteps.API_mail_create_report_employeeData()]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[userData_TADE]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method signature="API_mail_create_report_employeeData()[pri:1, instance:org.c3p.automation.api.steps.report.APITestReportSteps@3e08ff24]" started-at="2025-12-19T21:56:12 IST" name="API_mail_create_report_employeeData" finished-at="2025-12-19T21:58:35 IST" duration-ms="143276" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- API_mail_create_report_employeeData -->
+        <test-method is-config="true" signature="tearDownTest(java.lang.reflect.Method)[pri:0, instance:org.c3p.automation.api.steps.report.APITestReportSteps@3e08ff24]" started-at="2025-12-19T21:58:35 IST" name="tearDownTest" finished-at="2025-12-19T21:58:35 IST" duration-ms="4" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.report.APITestReportSteps.API_mail_create_report_employeeData()]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDownTest -->
+        <test-method is-config="true" signature="beforeMethod(java.lang.reflect.Method, java.lang.String)[pri:0, instance:org.c3p.automation.api.steps.report.APITestReportSteps@3e08ff24]" started-at="2025-12-19T21:58:35 IST" name="beforeMethod" finished-at="2025-12-19T21:58:35 IST" duration-ms="49" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.report.APITestReportSteps.API_create_report_mail_masked()]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[userData_TADE]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method signature="API_create_report_mail_masked()[pri:2, instance:org.c3p.automation.api.steps.report.APITestReportSteps@3e08ff24]" started-at="2025-12-19T21:58:35 IST" name="API_create_report_mail_masked" finished-at="2025-12-19T21:59:04 IST" duration-ms="28652" status="FAIL">
+          <exception class="java.lang.AssertionError">
+            <message>
+              <![CDATA[Failed while hitting open BU endpoint - com.jayway.jsonpath.PathNotFoundException: No results for path: $['openRequest'][0]['request']['businessUnit']['CIS']]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[java.lang.AssertionError: Failed while hitting open BU endpoint - com.jayway.jsonpath.PathNotFoundException: No results for path: $['openRequest'][0]['request']['businessUnit']['CIS']
+at org.junit.Assert.fail(Assert.java:93)
+at org.junit.Assert.assertTrue(Assert.java:43)
+at org.c3p.automation.api.commons.commonfunctions.CommonFunctionsAPI.validateOpenBURequest(CommonFunctionsAPI.java:1860)
+at org.c3p.automation.api.steps.report.APITestReportSteps.API_create_report_mail_masked(APITestReportSteps.java:60)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:134)
+at org.testng.internal.TestInvoker.invokeMethod(TestInvoker.java:597)
+at org.testng.internal.TestInvoker.invokeTestMethod(TestInvoker.java:173)
+at org.testng.internal.MethodRunner.runInSequence(MethodRunner.java:46)
+at org.testng.internal.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:816)
+at org.testng.internal.TestInvoker.invokeTestMethods(TestInvoker.java:146)
+at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:766)
+at org.testng.TestRunner.run(TestRunner.java:587)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:384)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:378)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:337)
+at org.testng.SuiteRunner.run(SuiteRunner.java:286)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:96)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1187)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1109)
+at org.testng.TestNG.runSuites(TestNG.java:1039)
+at org.testng.TestNG.run(TestNG.java:1007)
+at org.c3p.automation.framework.runner.RegressionTestRunner.main(RegressionTestRunner.java:51)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.lang.AssertionError -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- API_create_report_mail_masked -->
+        <test-method is-config="true" signature="tearDownTest(java.lang.reflect.Method)[pri:0, instance:org.c3p.automation.api.steps.report.APITestReportSteps@3e08ff24]" started-at="2025-12-19T21:59:04 IST" name="tearDownTest" finished-at="2025-12-19T21:59:04 IST" duration-ms="3" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.report.APITestReportSteps.API_create_report_mail_masked()]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDownTest -->
+        <test-method is-config="true" signature="beforeMethod(java.lang.reflect.Method, java.lang.String)[pri:0, instance:org.c3p.automation.api.steps.report.APITestReportSteps@3e08ff24]" started-at="2025-12-19T21:59:04 IST" name="beforeMethod" finished-at="2025-12-19T21:59:04 IST" duration-ms="46" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.report.APITestReportSteps.API_create_report_softCopy()]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[userData_TADE]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method signature="API_create_report_softCopy()[pri:3, instance:org.c3p.automation.api.steps.report.APITestReportSteps@3e08ff24]" started-at="2025-12-19T21:59:04 IST" name="API_create_report_softCopy" finished-at="2025-12-19T21:59:29 IST" duration-ms="25295" status="FAIL">
+          <exception class="java.lang.AssertionError">
+            <message>
+              <![CDATA[Failed while hitting open BU endpoint - com.jayway.jsonpath.PathNotFoundException: No results for path: $['openRequest'][0]['request']['businessUnit']['CIS']]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[java.lang.AssertionError: Failed while hitting open BU endpoint - com.jayway.jsonpath.PathNotFoundException: No results for path: $['openRequest'][0]['request']['businessUnit']['CIS']
+at org.junit.Assert.fail(Assert.java:93)
+at org.junit.Assert.assertTrue(Assert.java:43)
+at org.c3p.automation.api.commons.commonfunctions.CommonFunctionsAPI.validateOpenBURequest(CommonFunctionsAPI.java:1860)
+at org.c3p.automation.api.steps.report.APITestReportSteps.API_create_report_softCopy(APITestReportSteps.java:74)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:134)
+at org.testng.internal.TestInvoker.invokeMethod(TestInvoker.java:597)
+at org.testng.internal.TestInvoker.invokeTestMethod(TestInvoker.java:173)
+at org.testng.internal.MethodRunner.runInSequence(MethodRunner.java:46)
+at org.testng.internal.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:816)
+at org.testng.internal.TestInvoker.invokeTestMethods(TestInvoker.java:146)
+at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:766)
+at org.testng.TestRunner.run(TestRunner.java:587)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:384)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:378)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:337)
+at org.testng.SuiteRunner.run(SuiteRunner.java:286)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:96)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1187)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1109)
+at org.testng.TestNG.runSuites(TestNG.java:1039)
+at org.testng.TestNG.run(TestNG.java:1007)
+at org.c3p.automation.framework.runner.RegressionTestRunner.main(RegressionTestRunner.java:51)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.lang.AssertionError -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- API_create_report_softCopy -->
+        <test-method is-config="true" signature="tearDownTest(java.lang.reflect.Method)[pri:0, instance:org.c3p.automation.api.steps.report.APITestReportSteps@3e08ff24]" started-at="2025-12-19T21:59:29 IST" name="tearDownTest" finished-at="2025-12-19T21:59:29 IST" duration-ms="2" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.report.APITestReportSteps.API_create_report_softCopy()]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDownTest -->
+      </class> <!-- org.c3p.automation.api.steps.report.APITestReportSteps -->
+      <class name="org.c3p.automation.api.steps.delete.APITestDeleteSteps">
+        <test-method is-config="true" signature="beforeMethod(java.lang.reflect.Method, java.lang.String)[pri:0, instance:org.c3p.automation.api.steps.delete.APITestDeleteSteps@1033576a]" started-at="2025-12-19T22:05:23 IST" name="beforeMethod" finished-at="2025-12-19T22:05:23 IST" duration-ms="46" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.delete.APITestDeleteSteps.API_create_delete_case()]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[userData_TADE]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method signature="API_create_delete_case()[pri:1, instance:org.c3p.automation.api.steps.delete.APITestDeleteSteps@1033576a]" started-at="2025-12-19T22:05:23 IST" name="API_create_delete_case" finished-at="2025-12-19T22:07:20 IST" duration-ms="116628" status="FAIL">
+          <exception class="java.lang.AssertionError">
+            <message>
+              <![CDATA[Failed while hitting open BU endpoint - com.jayway.jsonpath.PathNotFoundException: No results for path: $['openRequest'][0]['request']['businessUnit']['CIS']]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[java.lang.AssertionError: Failed while hitting open BU endpoint - com.jayway.jsonpath.PathNotFoundException: No results for path: $['openRequest'][0]['request']['businessUnit']['CIS']
+at org.junit.Assert.fail(Assert.java:93)
+at org.junit.Assert.assertTrue(Assert.java:43)
+at org.c3p.automation.api.commons.commonfunctions.CommonFunctionsAPI.validateOpenBURequest(CommonFunctionsAPI.java:1860)
+at org.c3p.automation.api.steps.delete.APITestDeleteSteps.API_create_delete_case(APITestDeleteSteps.java:33)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:134)
+at org.testng.internal.TestInvoker.invokeMethod(TestInvoker.java:597)
+at org.testng.internal.TestInvoker.invokeTestMethod(TestInvoker.java:173)
+at org.testng.internal.MethodRunner.runInSequence(MethodRunner.java:46)
+at org.testng.internal.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:816)
+at org.testng.internal.TestInvoker.invokeTestMethods(TestInvoker.java:146)
+at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:766)
+at org.testng.TestRunner.run(TestRunner.java:587)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:384)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:378)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:337)
+at org.testng.SuiteRunner.run(SuiteRunner.java:286)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:96)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1187)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1109)
+at org.testng.TestNG.runSuites(TestNG.java:1039)
+at org.testng.TestNG.run(TestNG.java:1007)
+at org.c3p.automation.framework.runner.RegressionTestRunner.main(RegressionTestRunner.java:51)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.lang.AssertionError -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- API_create_delete_case -->
+        <test-method is-config="true" signature="tearDownTest(java.lang.reflect.Method)[pri:0, instance:org.c3p.automation.api.steps.delete.APITestDeleteSteps@1033576a]" started-at="2025-12-19T22:07:20 IST" name="tearDownTest" finished-at="2025-12-19T22:07:20 IST" duration-ms="3" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.delete.APITestDeleteSteps.API_create_delete_case()]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDownTest -->
+      </class> <!-- org.c3p.automation.api.steps.delete.APITestDeleteSteps -->
+    </test> <!-- 001 C3P API Report/Corrections -->
+    <test started-at="2025-12-19T22:07:20 IST" name="002 C3P API Misc Tests" finished-at="2025-12-19T22:23:59 IST" duration-ms="999178">
+      <class name="org.c3p.automation.api.steps.report.APITestCasesValidation">
+        <test-method is-config="true" signature="API_Prerequisites(java.lang.String)[pri:0, instance:org.c3p.automation.api.steps.report.APITestCasesValidation@71075444]" started-at="2025-12-19T21:56:07 IST" name="API_Prerequisites" finished-at="2025-12-19T21:56:11 IST" duration-ms="4596" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[userData_TADE]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- API_Prerequisites -->
+        <test-method is-config="true" signature="beforeMethod(java.lang.reflect.Method, java.lang.String)[pri:0, instance:org.c3p.automation.api.steps.report.APITestCasesValidation@71075444]" started-at="2025-12-19T22:07:20 IST" name="beforeMethod" finished-at="2025-12-19T22:07:20 IST" duration-ms="47" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.report.APITestCasesValidation.optOutCasesValidation()]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[userData_TADE]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method signature="optOutCasesValidation()[pri:1, instance:org.c3p.automation.api.steps.report.APITestCasesValidation@71075444]" started-at="2025-12-19T22:07:20 IST" name="optOutCasesValidation" finished-at="2025-12-19T22:07:20 IST" duration-ms="60" status="FAIL">
+          <exception class="java.lang.NumberFormatException">
+            <message>
+              <![CDATA[For input string: ""]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[java.lang.NumberFormatException: For input string: ""
+at java.base/java.lang.NumberFormatException.forInputString(NumberFormatException.java:67)
+at java.base/java.lang.Integer.parseInt(Integer.java:678)
+at java.base/java.lang.Integer.parseInt(Integer.java:786)
+at org.c3p.automation.api.steps.report.APITestCasesValidation.optOutCaseTypeValidation(APITestCasesValidation.java:338)
+at org.c3p.automation.api.steps.report.APITestCasesValidation.optOutCasesValidation(APITestCasesValidation.java:87)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:134)
+at org.testng.internal.TestInvoker.invokeMethod(TestInvoker.java:597)
+at org.testng.internal.TestInvoker.invokeTestMethod(TestInvoker.java:173)
+at org.testng.internal.MethodRunner.runInSequence(MethodRunner.java:46)
+at org.testng.internal.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:816)
+at org.testng.internal.TestInvoker.invokeTestMethods(TestInvoker.java:146)
+at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:766)
+at org.testng.TestRunner.run(TestRunner.java:587)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:384)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:378)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:337)
+at org.testng.SuiteRunner.run(SuiteRunner.java:286)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:96)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1187)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1109)
+at org.testng.TestNG.runSuites(TestNG.java:1039)
+at org.testng.TestNG.run(TestNG.java:1007)
+at org.c3p.automation.framework.runner.RegressionTestRunner.main(RegressionTestRunner.java:51)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.lang.NumberFormatException -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- optOutCasesValidation -->
+        <test-method is-config="true" signature="tearDownTest(java.lang.reflect.Method)[pri:0, instance:org.c3p.automation.api.steps.report.APITestCasesValidation@71075444]" started-at="2025-12-19T22:07:20 IST" name="tearDownTest" finished-at="2025-12-19T22:07:20 IST" duration-ms="5" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.report.APITestCasesValidation.optOutCasesValidation()]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDownTest -->
+        <test-method is-config="true" signature="beforeMethod(java.lang.reflect.Method, java.lang.String)[pri:0, instance:org.c3p.automation.api.steps.report.APITestCasesValidation@71075444]" started-at="2025-12-19T22:07:20 IST" name="beforeMethod" finished-at="2025-12-19T22:07:20 IST" duration-ms="53" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.report.APITestCasesValidation.deleteCasesValidation()]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[userData_TADE]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method signature="deleteCasesValidation()[pri:2, instance:org.c3p.automation.api.steps.report.APITestCasesValidation@71075444]" started-at="2025-12-19T22:07:20 IST" name="deleteCasesValidation" finished-at="2025-12-19T22:07:20 IST" duration-ms="33" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- deleteCasesValidation -->
+        <test-method is-config="true" signature="tearDownTest(java.lang.reflect.Method)[pri:0, instance:org.c3p.automation.api.steps.report.APITestCasesValidation@71075444]" started-at="2025-12-19T22:07:20 IST" name="tearDownTest" finished-at="2025-12-19T22:07:20 IST" duration-ms="21" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.report.APITestCasesValidation.deleteCasesValidation()]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDownTest -->
+        <test-method is-config="true" signature="beforeMethod(java.lang.reflect.Method, java.lang.String)[pri:0, instance:org.c3p.automation.api.steps.report.APITestCasesValidation@71075444]" started-at="2025-12-19T22:07:20 IST" name="beforeMethod" finished-at="2025-12-19T22:07:20 IST" duration-ms="48" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.report.APITestCasesValidation.correctionsCasesValidation()]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[userData_TADE]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method signature="correctionsCasesValidation()[pri:3, instance:org.c3p.automation.api.steps.report.APITestCasesValidation@71075444]" started-at="2025-12-19T22:07:20 IST" name="correctionsCasesValidation" finished-at="2025-12-19T22:07:20 IST" duration-ms="26" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- correctionsCasesValidation -->
+        <test-method is-config="true" signature="tearDownTest(java.lang.reflect.Method)[pri:0, instance:org.c3p.automation.api.steps.report.APITestCasesValidation@71075444]" started-at="2025-12-19T22:07:20 IST" name="tearDownTest" finished-at="2025-12-19T22:07:20 IST" duration-ms="4" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.report.APITestCasesValidation.correctionsCasesValidation()]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDownTest -->
+        <test-method is-config="true" signature="beforeMethod(java.lang.reflect.Method, java.lang.String)[pri:0, instance:org.c3p.automation.api.steps.report.APITestCasesValidation@71075444]" started-at="2025-12-19T22:07:20 IST" name="beforeMethod" finished-at="2025-12-19T22:07:20 IST" duration-ms="44" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.report.APITestCasesValidation.reportsCaseValidation()]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[userData_TADE]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method signature="reportsCaseValidation()[pri:4, instance:org.c3p.automation.api.steps.report.APITestCasesValidation@71075444]" started-at="2025-12-19T22:07:20 IST" name="reportsCaseValidation" finished-at="2025-12-19T22:23:59 IST" duration-ms="998796" status="FAIL">
+          <exception class="java.lang.AssertionError">
+            <message>
+              <![CDATA[CONFIRMATION_EMAIL_SENT date is NOT yet set, breaking loop as the time is > 15 mins, Please verify case - 8225877]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[java.lang.AssertionError: CONFIRMATION_EMAIL_SENT date is NOT yet set, breaking loop as the time is > 15 mins, Please verify case - 8225877
+at org.junit.Assert.fail(Assert.java:93)
+at org.junit.Assert.assertTrue(Assert.java:43)
+at org.c3p.automation.framework.utils.GlobalFunctionsAPIWEB.reportStatusCheck(GlobalFunctionsAPIWEB.java:727)
+at org.c3p.automation.api.steps.report.APITestCasesValidation.reportValidation_API(APITestCasesValidation.java:289)
+at org.c3p.automation.api.steps.report.APITestCasesValidation.reportsCaseValidation(APITestCasesValidation.java:156)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:134)
+at org.testng.internal.TestInvoker.invokeMethod(TestInvoker.java:597)
+at org.testng.internal.TestInvoker.invokeTestMethod(TestInvoker.java:173)
+at org.testng.internal.MethodRunner.runInSequence(MethodRunner.java:46)
+at org.testng.internal.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:816)
+at org.testng.internal.TestInvoker.invokeTestMethods(TestInvoker.java:146)
+at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:766)
+at org.testng.TestRunner.run(TestRunner.java:587)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:384)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:378)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:337)
+at org.testng.SuiteRunner.run(SuiteRunner.java:286)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:96)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1187)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1109)
+at org.testng.TestNG.runSuites(TestNG.java:1039)
+at org.testng.TestNG.run(TestNG.java:1007)
+at org.c3p.automation.framework.runner.RegressionTestRunner.main(RegressionTestRunner.java:51)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.lang.AssertionError -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- reportsCaseValidation -->
+        <test-method is-config="true" signature="tearDownTest(java.lang.reflect.Method)[pri:0, instance:org.c3p.automation.api.steps.report.APITestCasesValidation@71075444]" started-at="2025-12-19T22:23:59 IST" name="tearDownTest" finished-at="2025-12-19T22:23:59 IST" duration-ms="4" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void org.c3p.automation.api.steps.report.APITestCasesValidation.reportsCaseValidation()]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDownTest -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:org.c3p.automation.api.steps.report.APITestCasesValidation@71075444]" started-at="2025-12-19T22:23:59 IST" name="tearDown" finished-at="2025-12-19T22:24:00 IST" duration-ms="367" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- org.c3p.automation.api.steps.report.APITestCasesValidation -->
+    </test> <!-- 002 C3P API Misc Tests -->
+  </suite> <!-- C3P API Regression Suite -->
+</testng-results>

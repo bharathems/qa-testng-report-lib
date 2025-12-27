@@ -1,4 +1,4 @@
-package org.exp.reportservice.cucumber;
+package org.exp.reportservice.testrunners;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class JsonThenPostProcess {
@@ -19,12 +18,12 @@ public class JsonThenPostProcess {
         try {
             // Manually trigger the report merging
 //            mergeCucumberJsonReports(); //Optional
-//            ReportService.sendReportsInEmail("QE will perform post-validation failure analysis and circulate key findings within 45 minutes to all stakeholders." ,
+//            CucumberEmailReportService.sendReportsInEmail("QE will perform post-validation failure analysis and circulate key findings within 45 minutes to all stakeholders." ,
 //                    "APP Name",
 //                    "cucumber-json-report.json",
 //                    "bharath.potlabhatni@experian.com",
 //                    "PRODUCTION Sanity Execution Report ");
-            ReportService.sendReportsInEmail(
+            CucumberEmailReportService.sendReportsInEmail(
                     "APP Name",
                     "cucumber-json-report.json",
                     "bharath.potlabhatni@experian.com",

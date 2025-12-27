@@ -48,18 +48,19 @@ public class CommonFunctions {
                 + "  </tr>"
                 + "</table>";
     }
+
     public static StringBuilder overAllSummary(String methodsOrScenarios) {
         return new StringBuilder()
                 .append("<table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"margin:0;padding:0;\">")
                 .append("<tr><td style=\"padding:0;\">")
                 .append("<div style=\"margin:0;padding:0;\">")
+                .append("<table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td style=\"font-size:12px;line-height:10px;padding-top:0px;\">&nbsp;</td></tr></table>")
                 .append("<h2 style=\"font-family:Arial,Helvetica,sans-serif;font-size:18px;text-decoration:underline;color:#0b57a4;margin:0;padding:0;\">Overall Summary</h2>")
                 .append("</div>")
                 .append("</td></tr></table>")
                 .append(getSummaryHTML(methodsOrScenarios))
                 .append("<div class='section-body' style='margin:-24px 0 8px;'>")
                 .append("</div>");
-
     }
 
     public static String statusPill(String statusRaw) {

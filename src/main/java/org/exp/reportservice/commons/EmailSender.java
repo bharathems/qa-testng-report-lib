@@ -55,7 +55,9 @@ public class EmailSender {
         barPart.setContentID("<bar>");
         barPart.setDisposition(MimeBodyPart.INLINE);
         multipart.addBodyPart(barPart);
-        File reportPDF = Paths.get("target").resolve("report.pdf").toFile();
+        String date = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.BASIC_ISO_DATE);
+        File reportPDF = Paths.get("target").resolve("report-" + date + ".pdf").toFile();
+
         if (reportPDF.exists()) {
             MimeBodyPart pdfPart = new MimeBodyPart();
             pdfPart.attachFile(reportPDF);

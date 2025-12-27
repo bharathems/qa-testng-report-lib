@@ -1,8 +1,11 @@
-package org.exp.reportservice.testng;
+package org.exp.reportservice.testrunners;
 
 import org.exp.reportservice.commons.EmailSender;
+import org.exp.reportservice.testng.TestNGReportParser;
+import org.exp.reportservice.testng.TestNGResult;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -12,7 +15,7 @@ import static org.exp.reportservice.testng.ChartGenerator.createBarChart;
 import static org.exp.reportservice.testng.ChartGenerator.createPieChart;
 import static org.exp.reportservice.testng.TestNGReportParser.testNgResults;
 
-public class TestExecutionManager {
+public class TestNGEmailReportService {
 
     public static StringBuilder legendHtml = new StringBuilder();
 
@@ -36,6 +39,10 @@ public class TestExecutionManager {
         Path path = Paths.get(System.getProperty("user.dir")).resolve("test-output").resolve("testng-results.xml");
         if (optionalFilePath != null) {
             path = Paths.get(optionalFilePath);
+        }
+
+        if (!Files.exists(path)) {
+            throw new IllegalArgumentException("TestNG results file not found at path: " + path + ". Provide a valid optionalFilePath or ensure the file exists.");
         }
 
         try {

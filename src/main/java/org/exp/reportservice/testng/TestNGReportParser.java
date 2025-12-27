@@ -27,7 +27,7 @@ public class TestNGReportParser {
     static int totalMethodsPassedCount = 0;
     static int totalMethodsFailedCount = 0;
     static int totalMethodsSkippedCount = 0;
-    static List<TestNGResult> testNgResults = new ArrayList<>();
+    public static List<TestNGResult> testNgResults = new ArrayList<>();
     static final String TABLE_STYLE = "border-collapse:separate;font-family:Arial,sans-serif;font-size:12px;width:100%;background:#ffffff;border-radius:8px;overflow:hidden;border-spacing:0;";
     static final String TH_STYLE = "style=\"background-color:#0b57a4;color:#fff;padding:12px 10px;border-bottom:2px solid #1565c0;border-right:1px solid #e6eef6;text-align:left;font-weight:bold;font-size:14px;font-family:Arial,sans-serif;\"";
     static final String TD_STYLE = "style=\"padding:10px 8px;border:1px solid #eef3fb;text-align:left;vertical-align:top;color:#223047;background:#ffffff;font-size:13px;\"";
@@ -67,7 +67,6 @@ public class TestNGReportParser {
             if (suiteNode.getNodeType() != Node.ELEMENT_NODE) continue;
             Element suiteElement = (Element) suiteNode;
             String suiteName = suiteElement.getAttribute("name");
-
             scnHtmlBuilder.append("<table id=\"feature-details\" " + TABLE_ATTR + " style=\"" + TABLE_STYLE + "margin-bottom:12px;\">")
                     .append("<caption " + CAPTION_STYLE + ">"
                             + " <span style=\"color:#0b57a4;font-weight:700;font-family:Arial,Helvetica,sans-serif;\">SUITE NAME - </span>" + escapeHtml(suiteName) + "</caption>")
@@ -183,7 +182,7 @@ public class TestNGReportParser {
 
                     // Prepend the header rows for test and class (only once per class)
                     scnHtmlBuilder.append("<a id=\"methods-details-table\" name=\"methods-details-table\"></a>");
-                    scnHtmlBuilder.append("<tr id=\"feature_"+testName+"  name = \"feature_"+testName+" \">");
+                    scnHtmlBuilder.append("<tr id=\"feature_"+testName+"\"  name = \"feature_"+testName+" \">");
                     scnHtmlBuilder.append("<a id=\"feature_"+testName+"\" name=\"feature_"+testName+"\"></a>");
 
                     scnHtmlBuilder.append("<td " + TD_STYLE + ">").append(firstRowForTest ? escapeHtml(testName) : "").append("</td>");
