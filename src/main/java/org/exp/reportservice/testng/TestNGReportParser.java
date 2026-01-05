@@ -41,7 +41,6 @@ public class TestNGReportParser {
         setHeader(htmlBuilder, applicationName);
         String summaryTable = overAllSummary("Methods").toString();
 
-        System.out.println(summaryTable);
 
         // Use alternating row backgrounds for the feature summary table (email-friendly using bgcolor)
         StringBuilder featuresTableBuilder = new StringBuilder();
@@ -250,11 +249,11 @@ public class TestNGReportParser {
         footer_backToAllTheWayTop(htmlBuilder);
         setFooter(htmlBuilder);
 
-        System.out.println("---------------------------");
-        System.out.println(htmlBuilder);
+//        System.out.println("---------------------------");
+//        System.out.println(htmlBuilder);
         setHtmlBuilder(new StringBuilder(htmlBuilder));
         HTMLReportGeneration.htmlReportGenerator();
-        System.out.println("---------------------------");
+//        System.out.println("---------------------------");
         return htmlBuilder;
     }
 

@@ -178,7 +178,6 @@ public class CucumberReportParser {
             totalScenarioSkippedCount += scenarioSkippedCount;
         }
 
-        System.out.println(totalScenarioSize);
 
         html.append("<a id='top'></a>");
 

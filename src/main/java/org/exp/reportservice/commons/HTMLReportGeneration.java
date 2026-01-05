@@ -16,13 +16,14 @@ public class HTMLReportGeneration {
 
     public static void htmlReportGenerator(){
         // save HTML to target/report.html
+        String date = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.BASIC_ISO_DATE);
         Path targetDir = Paths.get("target");
         try {
             Files.createDirectories(targetDir);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Path reportHtml = targetDir.resolve("report.html");
+        Path reportHtml = targetDir.resolve("report-" + date + ".html");
 
         // fallback SVGs used when PNGs are not present
         String pieSvg = "<svg xmlns='http://www.w3.org/2000/svg' width='220' height='140'>"
@@ -88,10 +89,12 @@ public class HTMLReportGeneration {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Saved report to " + reportHtml.toAbsolutePath());
+//        System.out.println("Saved report to " + reportHtml.toAbsolutePath());
 
        try {
-           Path reportPDF = targetDir.resolve("report.pdf");
+//           String date = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.BASIC_ISO_DATE);
+           Path reportPDF = targetDir.resolve("report-" + date + ".pdf");
+//           Path reportPDF = targetDir.resolve("report.pdf");
            Objects.requireNonNull(reportHtml, "htmlFile must not be null");
            Objects.requireNonNull(reportPDF, "pdfFile must not be null");
            convert(reportHtml, reportPDF);
