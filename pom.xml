@@ -24,20 +24,20 @@
         <maven.compiler.target>17</maven.compiler.target>
         <aspectj.version>1.9.19</aspectj.version>
     </properties>
-<dependencyManagement>
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.pdfbox</groupId>
-      <artifactId>pdfbox</artifactId>
-      <version>2.0.27</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.pdfbox</groupId>
-      <artifactId>fontbox</artifactId>
-      <version>2.0.27</version>
-    </dependency>
-  </dependencies>
-</dependencyManagement>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.pdfbox</groupId>
+                <artifactId>pdfbox</artifactId>
+                <version>2.0.27</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.pdfbox</groupId>
+                <artifactId>fontbox</artifactId>
+                <version>2.0.27</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <distributionManagement>
         <repository>
             <id>nexus</id>
@@ -54,6 +54,59 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.4.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Attach a shaded artifact instead of replacing the main artifact so consumers can choose -->
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>shaded</shadedClassifierName>
+                            <createDependencyReducedPom>true</createDependencyReducedPom>
+                            <minimizeJar>false</minimizeJar>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.apache.pdfbox</pattern>
+                                    <shadedPattern>com.experian.shaded.org.apache.pdfbox</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.fontbox</pattern>
+                                    <shadedPattern>com.experian.shaded.org.apache.fontbox</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.openhtmltopdf</pattern>
+                                    <shadedPattern>com.experian.shaded.com.openhtmltopdf</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.jfree</pattern>
+                                    <shadedPattern>com.experian.shaded.org.jfree</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.jsoup</pattern>
+                                    <shadedPattern>com.experian.shaded.org.jsoup</shadedPattern>
+                                </relocation>
+                            </relocations>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                        <exclude>**/module-info.class</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
@@ -61,11 +114,11 @@
                     <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
-           <!-- <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>3.3.2</version>
-            </plugin>-->
+            <!-- <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-clean-plugin</artifactId>
+                 <version>3.3.2</version>
+             </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -77,7 +130,8 @@
                 <version>3.2.5</version> <!-- or your project's version -->
                 <configuration>
                     <!-- Pass the logging config file to forked test JVMs -->
-                    <argLine>-Djava.util.logging.config.file=${project.basedir}/src/main/resources/logging.properties</argLine>
+                    <argLine>-Djava.util.logging.config.file=${project.basedir}/src/main/resources/logging.properties
+                    </argLine>
                 </configuration>
             </plugin>
             <plugin>
@@ -167,16 +221,17 @@
             <artifactId>fontbox</artifactId>
         </dependency>
 
-            <dependency>
-                <groupId>org.jsoup</groupId>
-                <artifactId>jsoup</artifactId>
-                <version>1.16.1</version>
-            </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.16.1</version>
+        </dependency>
 
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-simple</artifactId>
-                <version>2.0.3</version>
-            </dependency>
-        </dependencies>
+        <!-- Use slf4j-api so the library does not force a logging binding on consumers -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.3</version>
+        </dependency>
+    </dependencies>
 </project>

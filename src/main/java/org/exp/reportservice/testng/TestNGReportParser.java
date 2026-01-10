@@ -243,7 +243,7 @@ public class TestNGReportParser {
 
         htmlBuilder.append(featuresTableBuilder);
                                                                                                                                                                                                                                                                                                     htmlBuilder.append("</div><br><img src='cid:bar' alt='bar'><br>")
-                .append("<h2 style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;text-decoration:underline;color:#0b57a4;\">Feature-wise Scenario Execution Details</h2>")
+                .append("<h2 style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;text-decoration:underline;color:#0b57a4;\">Test Execution Details</h2>")
                 .append("<hr style=\"border:none;border-bottom:1px solid #0b57a4;margin:2px 0;\">")
                 .append(scnHtmlBuilder);
         footer_backToAllTheWayTop(htmlBuilder);
